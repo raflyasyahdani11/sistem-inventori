@@ -26,4 +26,11 @@ class WebController extends Controller
 
         return view('pages.user.add')->with(compact('title'));
     }
+
+    public function showLogin()
+    {
+        $title = 'Login';
+
+        return view('pages.auth.login')->with(compact('title'));
+    }
 }

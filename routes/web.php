@@ -20,3 +20,7 @@ Route::prefix('/user')->group(function () {
     Route::get('/list', [WebController::class, 'showListUser'])->name('user.show');
     Route::get('/add', [WebController::class, 'showAddUser'])->name('user.add');
 });
+
+Route::prefix('/auth')->group(function () {
+    Route::get('/login', [WebController::class, 'showLogin'])->name('auth.login');
+});
