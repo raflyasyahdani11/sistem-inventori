@@ -1,24 +1,39 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 
-import { globSync } from "glob";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+const fs = require("fs");
+const path = require("path");
 
-const jsCustom = Object.fromEntries(
-    globSync("resources/js/pages/**/*.[js/css]").map((file) => [
-        path.relative(
-            "resources/js/pages",
-            file.slice(0, file.length - path.extname(file).length)
-        ),
-        fileURLToPath(new URL(file, import.meta.url)),
-    ])
-);
+function traverseDirectory(directoryPath) {
+    const files = fs.readdirSync(directoryPath);
+    const filePaths = [];
+
+    files.forEach((file) => {
+        const filePath = path.join(directoryPath, file);
+        const stat = fs.statSync(filePath);
+
+        if (stat.isFile()) {
+            filePaths.push(filePath);
+        } else if (stat.isDirectory()) {
+            const nestedFilePaths = traverseDirectory(filePath);
+            filePaths.push(...nestedFilePaths);
+        }
+    });
+
+    return filePaths;
+}
+
+const directoryPath = "resources/js/pages";
+const extraFiles = traverseDirectory(directoryPath);
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ["resources/css/app.css", "resources/js/app.js", jsCustom],
+            input: [
+                "resources/css/app.css",
+                "resources/js/app.js",
+                ...extraFiles,
+            ],
             refresh: true,
         }),
     ],

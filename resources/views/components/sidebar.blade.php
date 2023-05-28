@@ -48,37 +48,41 @@
             </div>
         </div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item {{ Request::routeIs('data.*') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_data"
             aria-expanded="false" aria-controls="collapse_data">
             <i class="bx bxs-data bx-xs"></i>
             <span>Data Master</span>
         </a>
-        <div id="collapse_data" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapse_data" class="collapse {{ Request::routeIs('data.*') ? 'show' : '' }}"
+            aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Menu :</h6>
-                <a class="collapse-item" href="">
+                <a class="collapse-item {{ Request::routeIs('data.barang.*') ? 'active' : '' }}"
+                    href="{{ route('data.barang.list') }}">
                     Data Barang
                 </a>
-                <a class="collapse-item" href="">
+                <a class="collapse-item {{ Request::routeIs('data.supplier.*') ? 'active' : '' }}"
+                    href="{{ route('data.supplier.list') }}">
                     Data Supplier
                 </a>
             </div>
         </div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item {{ Request::routeIs('transaction.*') ? 'active' : '' }}">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapse_trx"
             aria-expanded="false" aria-controls="collapse_trx">
             <i class="bx bxs-receipt bx-xs"></i>
             <span>Transaksi</span>
         </a>
-        <div id="collapse_trx" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div id="collapse_trx" class="collapse {{ Request::routeIs('transaction.*') ? 'show' : '' }}"
+            aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Menu :</h6>
-                <a class="collapse-item" href="">
+                <a class="collapse-item {{ Request::routeIs('transaction.in.*') ? 'active' : '' }}" href="{{ route('transaction.in.list') }}">
                     Masuk
                 </a>
-                <a class="collapse-item" href="">
+                <a class="collapse-item {{ Request::routeIs('transaction.out.*') ? 'active' : '' }}" href="{{ route('transaction.out.list') }}">
                     Keluar
                 </a>
             </div>
@@ -92,8 +96,8 @@
         Laporan
     </div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="">
+    <li class="nav-item {{ Request::routeIs('report.index') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('report.index') }}">
             <i class="bx bxs-report bx-xs"></i>
             <span>Laporan</span>
         </a>

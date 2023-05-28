@@ -5,8 +5,14 @@
 @endpush
 
 @push('js')
-    @vite('resources/js/pages/user/list.js')
+    @vite('resources/js/pages/data/supplier/list.js')
 @endpush
+
+@section('button-side')
+    <a href="{{ route('data.supplier.add') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data Supplier 
+    </a>
+@endsection
 
 @section('content')
     <div class="card shadow">
@@ -20,9 +26,9 @@
                                 <thead>
                                     <tr>
                                         <th width="3%">No</th>
-                                        <th>Nama</th>
-                                        <th>No Hp</th>
-                                        <th>Username</th>
+                                        <th>Nama Supplier</th>
+                                        <th>Alamat</th>
+                                        <th>Telepon</th>
                                         <th width="15%">Aksi</th>
                                     </tr>
                                 </thead>
@@ -30,9 +36,9 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->nama }}</td>
-                                            <td>{{ $item->no_hp }}</td>
-                                            <td>{{ $item->username }}</td>
+                                            <td>{{ $item->nama_supplier }}</td>
+                                            <td>{{ $item->alamat }}</td>
+                                            <td>{{ $item->telepon }}</td>
                                             <td class="text-center">
                                                 <a class="btn btn-warning btn-sm">
                                                     <span>
