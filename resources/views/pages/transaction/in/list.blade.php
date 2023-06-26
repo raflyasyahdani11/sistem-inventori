@@ -9,8 +9,8 @@
 @endpush
 
 @section('button-side')
-    <a href="{{ route('transaction.in.add') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Masuk 
+    <a href="{{ route('in.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Masuk
     </a>
 @endsection
 
@@ -25,27 +25,27 @@
                                 role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th width="3%">No</th>
-                                        <th>Tanggal Masuk</th>
-                                        <th>Nama</th>
-                                        <th>Tanggl Expired</th>
-                                        <th>Pengirim</th>
-                                        <th>Jumlah</th>
-                                        <th>Satuan</th>
-                                        <th width="15%">Aksi</th>
+                                        <th class="text-center align-middle" width="3%">No</th>
+                                        <th class="text-center align-middle">Tanggal Masuk</th>
+                                        <th class="text-center align-middle">Nama barang</th>
+                                        <th class="text-center align-middle">Tanggal Expired</th>
+                                        <th class="text-center align-middle">Pengirim</th>
+                                        <th class="text-center align-middle">Jumlah</th>
+                                        <th class="text-center align-middle">Satuan</th>
+                                        {{-- <th width="15%">Aksi</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->tanggal_masuk }}</td>
-                                            <td>{{ $item->nama }}</td>
-                                            <td>{{ $item->tanggl_expired }}</td>
-                                            <td>{{ $item->pengirim }}</td>
+                                            <td>{{ date('j F Y', strtotime($item->tanggal_masuk)) }}</td>
+                                            <td>{{ $item->barang->nama }}</td>
+                                            <td>{{ date('j F Y', strtotime($item->tanggal_expired)) }}</td>
+                                            <td>{{ $item->supplier->nama }}</td>
                                             <td>{{ $item->jumlah }}</td>
-                                            <td>{{ $item->satuan }}</td>
-                                            <td class="text-center">
+                                            <td>{{ $item->barang->satuan_barang->nama }}</td>
+                                            {{-- <td class="text-center">
                                                 <a class="btn btn-warning btn-sm">
                                                     <span>
                                                         <i class="fas fa-edit"></i>
@@ -57,12 +57,12 @@
                                                     </span>
                                                 </a>
                                                 <a class="btn btn-info btn-sm" 
-                                                href="{{ route('data.barang.detail', $loop->iteration) }}">
+                                                href="{{ route('barang.show', $loop->iteration) }}">
                                                     <span>
                                                         <i class="fas fa-search"></i>
                                                     </span>
                                                 </a>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

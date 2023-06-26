@@ -3,27 +3,44 @@
         aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-bell fa-fw"></i>
         <!-- Counter - Alerts -->
-        <span class="badge badge-danger badge-counter">3+</span>
+        @if (auth()->user()->unreadNotifications->count() > 0)
+            <span class="badge badge-danger badge-counter">
+                {{ auth()->user()->unreadNotifications->count() }}
+            </span>
+        @else
+            <span class="badge badge-danger badge-counter"></span>
+        @endif
     </a>
     <!-- Dropdown - Alerts -->
     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
         aria-labelledby="alertsDropdown">
         <h6 class="dropdown-header">
-            Alerts Center
+            Notifikasi
         </h6>
-        <a class="dropdown-item d-flex align-items-center" href="#">
-            <div class="mr-3">
-                <div class="icon-circle bg-primary">
-                    <i class="fas fa-file-alt text-white"></i>
+        @if (auth()->user()->notifications->isNotEmpty())
+            @foreach (auth()->user()->notifications as $item)
+                <a href="" @class(['dropdown-item', 'd-flex', 'align-items-center']) @style([
+                    'background-color: rgba(165, 255, 165, 0.22)' => $item->read_at == null,
+                ])>
+                    <div class="mr-3">
+                        <div class="icon-circle bg-success">
+                            <i class="fas fa-donate text-white"></i>
+                        </div>
+                    </div>
+                    <div @class(['font-weight-bold' => $item->read_at == null])>
+                        <div class="small text-gray-500">{{ $item->created_at }}</div>
+                        {{ $item->data['message'] }}
+                    </div>
+                </a>
+            @endforeach
+        @else
+            <div class="dropdown-item d-flex align-items-center" href="#">
+                <div class="w-100 p-3">
+                    <p class="mb-0 text-center text-black-50">Opss.. Notifikasi Kosong</p>
                 </div>
             </div>
-            <div>
-                <div class="small text-gray-500">December 12, 2019</div>
-                <span class="font-weight-bold">A new monthly report is ready to
-                    download!</span>
-            </div>
-        </a>
-        <a class="dropdown-item d-flex align-items-center" href="#">
+        @endif
+        {{-- <a class="dropdown-item d-flex align-items-center" href="#">
             <div class="mr-3">
                 <div class="icon-circle bg-success">
                     <i class="fas fa-donate text-white"></i>
@@ -44,7 +61,7 @@
                 <div class="small text-gray-500">December 2, 2019</div>
                 Spending Alert: We've noticed unusually high spending for your account.
             </div>
-        </a>
+        </a> --}}
         <a class="dropdown-item text-center small text-gray-500" href="#">Show All
             Alerts</a>
     </div>

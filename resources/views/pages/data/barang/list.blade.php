@@ -9,8 +9,8 @@
 @endpush
 
 @section('button-side')
-    <a href="{{ route('data.barang.add') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data Barang 
+    <a href="{{ route('barang.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data Barang
     </a>
 @endsection
 
@@ -25,37 +25,41 @@
                                 role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th width="3%">No</th>
-                                        <th>Tanggl Expired</th>
-                                        <th>Nama Barang</th>
-                                        <th>Jenis Barang</th>
-                                        <th>Jumlah Barang</th>
-                                        <th>Satuan</th>
-                                        <th width="15%">Aksi</th>
+                                        <th class="text-center align-middle" width="3%">No</th>
+                                        <th class="text-center align-middle" width="12%">Kode Barang</th>
+                                        <th class="text-center align-middle">Nama Barang</th>
+                                        <th class="text-center align-middle">Jenis Barang</th>
+                                        <th class="text-center align-middle" width="8%">Jumlah Barang</th>
+                                        <th class="text-center align-middle">Satuan</th>
+                                        <th class="text-center align-middle" width="15%">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->tanggal_expired }}</td>
-                                            <td>{{ $item->nama_barang }}</td>
-                                            <td>{{ $item->jenis_barang }}</td>
-                                            <td>{{ $item->jumlah_barang }}</td>
-                                            <td>{{ $item->satuan }}</td>
+                                            <td class="text-monospace">{{ $item->kode }}</td>
+                                            <td>{{ $item->nama }}</td>
+                                            <td>{{ $item->jenis_barang->nama }}</td>
+                                            <td class="text-monospace text-right">{{ $item->jumlah }}</td>
+                                            <td>{{ $item->satuan_barang->nama }}</td>
                                             <td class="text-center">
-                                                <a class="btn btn-warning btn-sm">
+                                                <a class="btn btn-warning btn-sm" href="{{ route('barang.edit', $item) }}">
                                                     <span>
                                                         <i class="fas fa-edit"></i>
                                                     </span>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm">
-                                                    <span>
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </a>
-                                                <a class="btn btn-info btn-sm" 
-                                                href="{{ route('data.barang.detail', $loop->iteration) }}">
+                                                <form class="d-inline formDelete" method="post"
+                                                    action="{{ route('barang.destroy', $item) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <span>
+                                                            <i class="fas fa-trash"></i>
+                                                        </span>
+                                                    </button>
+                                                </form>
+                                                <a class="btn btn-info btn-sm" href="{{ route('barang.show', $item) }}">
                                                     <span>
                                                         <i class="fas fa-search"></i>
                                                     </span>

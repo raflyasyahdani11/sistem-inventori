@@ -1,52 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card shadow">
-        <div class="card-body">
-            <form>
-                @csrf
-                <div class="form-group">
-                    <label for="input-name">Id</label>
-                    <input type="text" class="form-control" id="input-name" aria-describedby="input-name-help">
-                    {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+    <div class="row">
+        <div class="col-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('barang.store') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="input-username">Kode Barang</label>
+                            <input type="text" class="form-control" id="input-username" name="kode"
+                                aria-describedby="input-username-help">
+                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                        </div>
+                        <div class="form-group">
+                            <label for="input-username">Nama Barang</label>
+                            <input type="text" class="form-control" id="input-username" name="nama"
+                                aria-describedby="input-username-help">
+                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                        </div>
+                        <div class="form-group">
+                            <label for="input-password">Jenis Barang</label>
+                            <div class="form-group">
+                                <select class="form-control" id="exampleFormControlSelect1" name="jenis">
+                                    @foreach ($jenisBarang as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                        </div>
+                        <div class="form-group">
+                            <label for="input-password">Jumlah Barang</label>
+                            <input type="number" class="form-control" id="input-password" name="jumlah"
+                                aria-describedby="input-password-help">
+                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                        </div>
+                        <div class="form-group">
+                            <label for="input-password">Satuan</label>
+                            <div class="form-group">
+                                <select class="form-control" id="exampleFormControlSelect1" name="satuan">
+                                    @foreach ($satuanBarang as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                    <label for="input-phone">Tanggal Expired</label>
-                    <input type="date" class="form-control" id="input-phone" aria-describedby="input-phone-help">
-                    {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
-                </div>
-                <div class="form-group">
-                    <label for="input-username">Nama Barang</label>
-                    <input type="text" class="form-control" id="input-username" aria-describedby="input-username-help">
-                    {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
-                </div>
-                <div class="form-group">
-                    <label for="input-password">Jenis Barang</label>
-                    <div class="form-group">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Jenis Barang 1</option>
-                            <option>Jenis Barang 2</option>
-                        </select>
-                    </div>
-                    {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
-                </div>
-                <div class="form-group">
-                    <label for="input-password">Jumlah Barang</label>
-                    <input type="number" class="form-control" id="input-password" aria-describedby="input-password-help">
-                    {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
-                </div>
-                <div class="form-group">
-                    <label for="input-password">Satuan</label>
-                    <div class="form-group">
-                        <select class="form-control" id="exampleFormControlSelect1">
-                            <option>Satuan Barang 1</option>
-                            <option>Satuan Barang 2</option>
-                        </select>
-                    </div>
-                    {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </form>
+            </div>
         </div>
     </div>
 @endsection

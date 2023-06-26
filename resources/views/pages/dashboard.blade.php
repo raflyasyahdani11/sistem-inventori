@@ -12,7 +12,7 @@
                                 Data User
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                251
+                                {{ $count->user }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -34,7 +34,7 @@
                                 Data Supplier
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                14
+                                {{ $count->supplier }}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -56,11 +56,11 @@
                                 Data Masuk
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                14
+                                {{ $count->trx_in }}
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class='bx bxs-right-top-arrow-circle bx-md text-gray-300'></i>
+                            <i class='bx bxs-right-down-arrow-circle bx-md text-gray-300'></i>
                         </div>
                     </div>
                 </div>
@@ -75,11 +75,11 @@
                                 Data Keluar
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                18
+                                {{ $count->trx_out }}
                             </div>
                         </div>
                         <div class="col-auto">
-                            <i class='bx bxs-right-down-arrow-circle bx-md text-gray-300'></i>
+                            <i class='bx bxs-right-top-arrow-circle bx-md text-gray-300'></i>
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                                 Data Gudang
                             </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                298
+                                0
                             </div>
                         </div>
                         <div class="col-auto">

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -17,11 +17,14 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $locale = 'id_ID';
+
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => fake($locale)->unique()->name(),
+            'username' => fake()->unique()->userName(),
+            'no_hp' => fake($locale)->unique()->phoneNumber(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$KOJ0RVL7hc3kGo99BJhttuhyD81zzS8PaW0ZrMDZAouvAurZPdv0S', // 123456
             'remember_token' => Str::random(10),
         ];
     }

@@ -30,20 +30,25 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->nama }}</td>
+                                            <td>{{ $item->name }}</td>
                                             <td>{{ $item->no_hp }}</td>
                                             <td>{{ $item->username }}</td>
                                             <td class="text-center">
-                                                <a class="btn btn-warning btn-sm">
+                                                <a href="{{ route('user.edit', $item) }}" class="btn btn-warning btn-sm">
                                                     <span>
                                                         <i class="fas fa-edit"></i>
                                                     </span>
                                                 </a>
-                                                <a class="btn btn-danger btn-sm">
-                                                    <span>
-                                                        <i class="fas fa-trash"></i>
-                                                    </span>
-                                                </a>
+                                                <form class="d-inline formDelete" method="post"
+                                                    action="{{ route('user.destroy', $item) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <span>
+                                                            <i class="fas fa-times-circle"></i>
+                                                        </span>
+                                                    </button>
+                                                </form>
                                                 <a class="btn btn-info btn-sm">
                                                     <span>
                                                         <i class="fas fa-search"></i>

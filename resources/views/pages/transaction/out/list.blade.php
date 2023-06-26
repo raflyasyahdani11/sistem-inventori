@@ -9,12 +9,26 @@
 @endpush
 
 @section('button-side')
-    <a href="{{ route('transaction.out.add') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Keluar 
+    <a href="{{ route('out.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Keluar
     </a>
 @endsection
 
 @section('content')
+    @if (session('message'))
+        <div role="alert" @class([
+            'alert',
+            'alert-dismissible',
+            'fade',
+            'show',
+            'alert-' . session('type'),
+        ])>
+            {{ session('message') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     <div class="card shadow">
         <div class="card-body">
             <div class="table-responsive overflow-hidden">
@@ -25,27 +39,33 @@
                                 role="grid" aria-describedby="dataTable_info" style="width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th width="3%">No</th>
-                                        <th>Tanggal Keluar</th>
-                                        <th>Nama</th>
-                                        <th>Tanggl Expired</th>
-                                        <th>Pengirim</th>
-                                        <th>Jumlah</th>
-                                        <th>Satuan</th>
-                                        <th width="15%">Aksi</th>
+                                        <th class="text-center align-middle" width="3%">No</th>
+                                        <th class="text-center align-middle" width="12%">Tanggal Keluar</th>
+                                        <th class="text-center align-middle" width="10%">Kode Barang</th>
+                                        <th class="text-center align-middle">Nama Barang</th>
+                                        <th class="text-center align-middle" width="12%">Tanggal Expired</th>
+                                        <th class="text-center align-middle">Pengirim</th>
+                                        <th class="text-center align-middle" width="5%">Jumlah</th>
+                                        <th class="text-center align-middle" width="5%">Satuan</th>
+                                        {{-- <th width="15%">Aksi</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->tanggal_keluar }}</td>
-                                            <td>{{ $item->nama }}</td>
-                                            <td>{{ $item->tanggl_expired }}</td>
-                                            <td>{{ $item->pengirim }}</td>
-                                            <td>{{ $item->jumlah }}</td>
-                                            <td>{{ $item->satuan }}</td>
-                                            <td class="text-center">
+                                            <td>
+                                                {{ date('j F Y', strtotime($item->tanggal_keluar)) }}
+                                            </td>
+                                            <td class="text-monospace">{{ $item->barang->kode }}</td>
+                                            <td>{{ $item->barang->nama }}</td>
+                                            <td>
+                                                {{ date('j F Y', strtotime($item->tanggal_expired)) }}
+                                            </td>
+                                            <td>{{ $item->supplier->nama }}</td>
+                                            <td class="text-right text-monospace">{{ $item->jumlah }}</td>
+                                            <td>{{ $item->barang->satuan_barang->nama }}</td>
+                                            {{-- <td class="text-center">
                                                 <a class="btn btn-warning btn-sm">
                                                     <span>
                                                         <i class="fas fa-edit"></i>
@@ -57,12 +77,12 @@
                                                     </span>
                                                 </a>
                                                 <a class="btn btn-info btn-sm" 
-                                                href="{{ route('data.barang.detail', $loop->iteration) }}">
+                                                href="{{ route('barang.show', $loop->iteration) }}">
                                                     <span>
                                                         <i class="fas fa-search"></i>
                                                     </span>
                                                 </a>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -2,188 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Eoq;
+use App\Models\Rop;
+use App\Models\Ss;
+use App\Models\User;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
+use App\Models\TransaksiMasuk;
+use App\Models\TransaksiKeluar;
+use Illuminate\Support\Facades\DB;
 
 class WebController extends Controller
 {
     public function showDashboard()
     {
         $title = 'Dashboard';
-
-        return view('pages.dashboard')->with(compact('title'));
-    }
-
-    public function showListUser()
-    {
-        $title = 'Daftar Pengguna';
-        $data = [
-            (object)[
-                'nama' => 'Diso',
-                'no_hp' => '082121491284',
-                'username' =>  'diso.diso.diso'
-            ],
-            (object)[
-                'nama' => 'Sinto',
-                'no_hp' => '082289512212',
-                'username' =>  'sinto.sinto.sinto'
-            ],
+        $count = (object)[
+            'user' => User::count(),
+            'supplier' => Supplier::count(),
+            'trx_in' => TransaksiMasuk::count(),
+            'trx_out' => TransaksiKeluar::count(),
         ];
 
-        return view('pages.user.list')
-            ->with(compact('title'))
-            ->with(compact('data'));
-    }
-
-    public function showAddUser()
-    {
-        $title = 'Tambah Pengguna';
-
-        return view('pages.user.add')->with(compact('title'));
-    }
-
-    public function showDataBarang()
-    {
-        $title = 'List Data Barang';
-        $data = [
-            (object)[
-                'tanggal_expired' => '22-07-20223',
-                'nama_barang' => 'Diso',
-                'jenis_barang' => 'Manusia',
-                'jumlah_barang' => '1',
-                'satuan' => 'Orang',
-            ],
-            (object)[
-                'tanggal_expired' => '22-07-20223',
-                'nama_barang' => 'Sinto',
-                'jenis_barang' => 'Manusia',
-                'jumlah_barang' => '1',
-                'satuan' => 'Orang',
-            ],
-        ];
-
-        return view('pages.data.barang.list')
-            ->with(compact('title'))
-            ->with(compact('data'));
-    }
-
-    public function showAddDataBarang()
-    {
-        $title = 'Add Data Barang';
-
-        return view('pages.data.barang.add')
-            ->with(compact('title'));
-    }
-
-    public function showDetailDataBarang($id)
-    {
-        $title = 'Detail Data Barang';
-        $data = [
-            (object)[
-                'periode' => 'Tahun',
-                'nama_barang' => 'Diso',
-                'jumlah_permintaan' => 600,
-                'eoq' => 109,
-                'ss' => 55,
-                'rop' => 216,
-                'range_waktu_pemesanan_kembali' => 6,
-            ],
-            (object)[
-                'periode' => 'Tahun',
-                'nama_barang' => 'Sinto',
-                'jumlah_permintaan' => 230,
-                'eoq' => 219,
-                'ss' => 59,
-                'rop' => 186,
-                'range_waktu_pemesanan_kembali' => 9,
-            ],
-        ];
-
-        return view('pages.data.barang.detail')
-            ->with(compact('title'))
-            ->with(compact('data'));
-    }
-
-    public function showDataSupplier()
-    {
-        $title = 'List Data Supplier';
-        $data = [
-            (object)[
-                'nama_supplier' => 'PT Diso Pekanbaru Distribusindo',
-                'alamat' => 'Jl. Manuk Biru No.1',
-                'telepon' => '076132789',
-            ],
-            (object)[
-                'nama_supplier' => 'PT Sinto Pekanbaru Distribusindo',
-                'alamat' => 'Jl. Toko Oren No.2',
-                'telepon' => '076132789',
-            ],
-        ];
-
-        return view('pages.data.supplier.list')
-            ->with(compact('title'))
-            ->with(compact('data'));
-    }
-
-    public function showAddDataSupplier()
-    {
-        $title = 'Add Data Supplier';
-
-        return view('pages.data.supplier.add')
-            ->with(compact('title'));
-    }
-
-    public function showInTransaction()
-    {
-        $title = 'List Transaksi Masuk';
-        $data = [
-            (object)[
-                'tanggal_masuk' => '21-08-2023',
-                'nama' => 'Diso',
-                'tanggl_expired' => '21-09-2023',
-                'pengirim' => 'Pt Sinto Distribusindo',
-                'jumlah' => '4',
-                'satuan' => 'Orang',
-            ]
-        ];
-
-        return view('pages.transaction.in.list')
-            ->with(compact('title'))
-            ->with(compact('data'));
-    }
-
-    public function showInTransactionAdd()
-    {
-        $title = 'Add Transaksi Masuk';
-
-        return view('pages.transaction.in.add')
-            ->with(compact('title'));
-    }
-
-    public function showOutTransaction()
-    {
-        $title = 'List Transaksi Keluar';
-        $data = [
-            (object)[
-                'tanggal_keluar' => '21-08-2023',
-                'nama' => 'Diso',
-                'tanggl_expired' => '21-09-2023',
-                'pengirim' => 'Pt Sinto Distribusindo',
-                'jumlah' => '4',
-                'satuan' => 'Orang',
-            ]
-        ];
-
-        return view('pages.transaction.out.list')
-            ->with(compact('title'))
-            ->with(compact('data'));
-    }
-
-    public function showOutTransactionAdd()
-    {
-        $title = 'Add Transaksi Keluar';
-
-        return view('pages.transaction.out.add')
-            ->with(compact('title'));
+        return view('pages.dashboard')
+            ->with(compact('title', 'count'));
     }
 
     public function showReportIndex()
@@ -198,6 +40,75 @@ class WebController extends Controller
     {
         $title = 'Login';
 
-        return view('pages.auth.login')->with(compact('title'));
+        return view('pages.auth.login')
+            ->with(compact('title'));
+    }
+
+    public function showPerhitunganEoq(Request $request)
+    {
+        $title = 'Perhitungan EOQ';
+
+        $yearNow = (int) date('Y') - 1;
+        $year = $request->get('year', $yearNow);
+
+        $years = Eoq::select('tahun_transaksi')
+            ->distinct()
+            ->orderBy('tahun_transaksi', 'desc')
+            ->pluck('tahun_transaksi')
+            ->except([$yearNow])
+            ->toArray();
+
+        $data = Eoq::with(['barang', 'supplier'])
+            ->where('tahun_transaksi', $year)
+            ->orderBy('barang_id')
+            ->get();
+
+        return view('pages.perhitungan.eoq.list')
+            ->with(compact('title', 'data', 'years', 'year'));
+    }
+
+    public function showPerhitunganSs(Request $request)
+    {
+        $title = 'Perhitungan SS';
+
+        $yearNow = (int) date('Y') - 1;
+        $year = $request->get('year', $yearNow);
+
+        $years = Ss::select('tahun_transaksi')
+            ->distinct()
+            ->orderBy('tahun_transaksi', 'desc')
+            ->pluck('tahun_transaksi')
+            ->except([$yearNow])
+            ->toArray();
+
+        $data = Ss::where('tahun_transaksi', $year)
+            ->orderBy('barang_id')
+            ->get();
+
+        return view('pages.perhitungan.ss.list')
+            ->with(compact('title', 'data', 'years', 'year'));
+    }
+
+    public function showPerhitunganRop(Request $request)
+    {
+        $title = 'Perhitungan ROP';
+
+        $yearNow = (int) date('Y') - 1;
+        $year = $request->get('year', $yearNow);
+
+        $data = Rop::where('tahun_transaksi', $year)
+            ->orderBy('barang_id')
+            ->get();
+
+        $years = Rop::select('tahun_transaksi')
+            ->distinct()
+            ->orderBy('tahun_transaksi', 'desc')
+            ->pluck('tahun_transaksi')
+            ->except([$yearNow])
+            ->toArray();
+
+
+        return view('pages.perhitungan.rop.list')
+            ->with(compact('title', 'data', 'years', 'year'));
     }
 }
