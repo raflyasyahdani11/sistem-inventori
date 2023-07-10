@@ -161,11 +161,38 @@ class WebController extends Controller
     }
 
     public function downloadReportTransactionIn(DownloadReportTransactionInRequest $request)
-    {
-        $validatedRequest = $request->validated();
+   {
+      $validatedRequest = $request->validated();
 
-        $validatedRequest['tahun'];
+      $tahun = $validatedRequest['tahun'];
+      $bulan = $validatedRequest['bulan'];
+      $bulanString = str_pad($bulan, 2, '0', STR_PAD_LEFT); // dari 1, 2, 3 -> jadi 01, 02, 03
 
-        return redirect()->back();
-    }
+      $date = \Carbon\Carbon::parse("$tahun-$bulanString-01");
+
+      $from = $date->toDateString();
+      $to = $date->endOfMonth()->toDateString();
+
+      $transaksiMasuk = TransaksiMasuk::with(['barang', 'supplier'])
+         ->whereBetween('tanggal_masuk', [$from, $to])
+         ->get()
+         ->map(function ($value) {
+            return [
+               'kode_barang' => $value->barang->kode,
+               'nama_barang' => $value->barang->nama,
+               'nama_supplier' => $value->supplier->nama,
+               'jumlah_barang' => $value->jumlah,
+               'tanggal_masuk' => $value->tanggal_masuk,
+               'tanggal_expired' => $value->tanggal_expired,
+            ];
+         })
+         ->toArray();
+
+      $fileExport = new TransaksiMasuk($transaksiMasuk);
+      $fileName = "transaksi_masuk.xlsx";
+      $response = Excel::download($fileExport, $fileName);
+      ob_end_clean();
+
+      return $response;
+   }
 }

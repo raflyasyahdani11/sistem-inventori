@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TransaksiMasuk;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
 
             TransaksiKeluarSeeder::class,
+            TransaksiMasukSeeder::class,
         ]);
     }
 }
