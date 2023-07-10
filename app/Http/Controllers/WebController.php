@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ss;
 use App\Models\Eoq;
 use App\Models\Rop;
-use App\Models\Ss;
 use App\Models\User;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\TransaksiMasuk;
 use App\Models\TransaksiKeluar;
-use Illuminate\Support\Facades\DB;
+use App\Exports\TransaksiKeluarExport;
+use App\Http\Requests\DownloadReportTransactionInRequest;
+use App\Http\Requests\DownloadReportTransactionOutRequest;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WebController extends Controller
 {
@@ -110,5 +113,59 @@ class WebController extends Controller
 
         return view('pages.perhitungan.rop.list')
             ->with(compact('title', 'data', 'years', 'year'));
+    }
+
+    public function readNotification(string $notification)
+    {
+        $notification = auth()->user()->notifications()->find($notification);
+
+        if ($notification) $notification->markAsRead();
+
+        return redirect()->back();
+    }
+
+    public function downloadReportTransactionOut(DownloadReportTransactionOutRequest $request)
+    {
+        $validatedRequest = $request->validated();
+
+        $tahun = $validatedRequest['tahun'];
+        $bulan = $validatedRequest['bulan'];
+        $bulanString = str_pad($bulan, 2, '0', STR_PAD_LEFT); // dari 1, 2, 3 -> jadi 01, 02, 03
+
+        $date = \Carbon\Carbon::parse("$tahun-$bulanString-01");
+
+        $from = $date->toDateString();
+        $to = $date->endOfMonth()->toDateString();
+
+        $transaksiKeluar = TransaksiKeluar::with(['barang', 'supplier'])
+            ->whereBetween('tanggal_keluar', [$from, $to])
+            ->get()
+            ->map(function ($value) {
+                return [
+                    'kode_barang' => $value->barang->kode,
+                    'nama_barang' => $value->barang->nama,
+                    'nama_supplier' => $value->supplier->nama,
+                    'jumlah_barang' => $value->jumlah,
+                    'tanggal_keluar' => $value->tanggal_keluar,
+                    'tanggal_expired' => $value->tanggal_expired,
+                ];
+            })
+            ->toArray();
+
+        $fileExport = new TransaksiKeluarExport($transaksiKeluar);
+        $fileName = "transaksi_keluar.xlsx";
+        $response = Excel::download($fileExport, $fileName);
+        ob_end_clean();
+
+        return $response;
+    }
+
+    public function downloadReportTransactionIn(DownloadReportTransactionInRequest $request)
+    {
+        $validatedRequest = $request->validated();
+
+        $validatedRequest['tahun'];
+
+        return redirect()->back();
     }
 }

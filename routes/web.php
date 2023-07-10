@@ -27,15 +27,18 @@ Route::get('/', function () {
 });
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
-Route::prefix('/auth')->middleware(['guest'])->group(function () {
-    Route::get('/login', [WebController::class, 'showLogin'])->name('auth.login');
-    Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
-});
+Route::prefix('/auth')
+    ->middleware('guest')
+    ->group(function () {
+        Route::get('/login', [WebController::class, 'showLogin'])->name('auth.login');
+        Route::post('/login', [AuthController::class, 'login'])->name('auth.login.post');
+    });
 
 Route::prefix('/sistem-inventori')
     ->middleware('auth')
     ->group(function () {
         Route::get('/dashboard', [WebController::class, 'showDashboard'])->name('dashboard');
+        Route::get('/notification/read/{notification}', [WebController::class, 'readNotification'])->name('notification.read');
 
         Route::resources([
             'user' => UserController::class,
@@ -67,4 +70,7 @@ Route::prefix('/sistem-inventori')
         });
 
         Route::get('/report', [WebController::class, 'showReportIndex'])->name('report.index');
+
+        Route::post('/report/download/transaksi_keluar', [WebController::class, 'downloadReportTransactionOut'])->name('report.transaction_out.download');
+        Route::post('/report/download/transaksi_masuk', [WebController::class, 'downloadReportTransactionIn'])->name('report.transaction_in.download');
     });

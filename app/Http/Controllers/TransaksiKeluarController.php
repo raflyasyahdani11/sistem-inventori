@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Rop;
+use App\Models\User;
 use App\Models\Barang;
 use App\Models\Supplier;
 use App\Models\TransaksiKeluar;
-use App\Http\Requests\StoreTransaksiKeluarRequest;
-use App\Http\Requests\UpdateTransaksiKeluarRequest;
-use App\Models\Rop;
-use App\Models\User;
 use App\Notifications\RestockItem;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Requests\StoreTransaksiKeluarRequest;
+use App\Http\Requests\UpdateTransaksiKeluarRequest;
 
 class TransaksiKeluarController extends Controller
 {
@@ -58,8 +58,7 @@ class TransaksiKeluarController extends Controller
 
             $rop = Rop::where('barang_id', $barangId)
                 ->where('tahun_transaksi', $lastYear)
-                ->first()
-                ->hasil;
+                ->first();
 
             if ($jumlah > $barang->jumlah) {
                 throw new \Exception("Stock barang kurang dari $jumlah");
@@ -75,11 +74,11 @@ class TransaksiKeluarController extends Controller
                 'tanggal_expired' => $request->post('tanggal_expired'),
             ]);
 
-            if ($barang->jumlah < round($rop)) {
+            $barang->save();
+
+            if ($rop && $barang->jumlah < round($rop->hasil)) {
                 Notification::send(User::all(), new RestockItem($barang));
             }
-
-            $barang->save();
 
             DB::commit();
 

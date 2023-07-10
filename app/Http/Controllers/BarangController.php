@@ -41,12 +41,14 @@ class BarangController extends Controller
      */
     public function store(StoreBarangRequest $request)
     {
+        $validatedRequest = $request->validated();
+
         $barang = Barang::create([
-            'kode' => $request->post('kode'),
-            'nama' => $request->post('nama'),
-            'jumlah' => $request->post('jumlah'),
-            'id_jenis_barang' => $request->post('jenis'),
-            'id_satuan_barang' => $request->post('satuan'),
+            'kode' => $validatedRequest['kode'],
+            'nama' => $validatedRequest['nama'],
+            'jumlah' => $validatedRequest['jumlah'],
+            'id_jenis_barang' => $validatedRequest['jenis'],
+            'id_satuan_barang' => $validatedRequest['satuan'],
         ]);
 
         if ($barang instanceof Barang) {

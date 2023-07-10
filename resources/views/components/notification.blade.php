@@ -19,17 +19,19 @@
         </h6>
         @if (auth()->user()->notifications->isNotEmpty())
             @foreach (auth()->user()->notifications as $item)
-                <a href="" @class(['dropdown-item', 'd-flex', 'align-items-center']) @style([
+                <a href="{{ route('notification.read', $item) }}" @class(['dropdown-item', 'd-flex', 'align-items-center']) @style([
                     'background-color: rgba(165, 255, 165, 0.22)' => $item->read_at == null,
                 ])>
                     <div class="mr-3">
-                        <div class="icon-circle bg-success">
-                            <i class="fas fa-donate text-white"></i>
+                        <div class="icon-circle bg-danger">
+                            <i class="fas fa-tag text-white"></i>
                         </div>
                     </div>
                     <div @class(['font-weight-bold' => $item->read_at == null])>
-                        <div class="small text-gray-500">{{ $item->created_at }}</div>
-                        {{ $item->data['message'] }}
+                        {!! $item->data['message'] !!}
+                        <div class="small text-gray-500">
+                            {{ \Carbon\Carbon::parse($item['created_at'])->diffForHumans() }}
+                        </div>
                     </div>
                 </a>
             @endforeach

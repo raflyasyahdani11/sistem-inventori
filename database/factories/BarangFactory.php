@@ -26,7 +26,7 @@ class BarangFactory extends Factory
         return [
             'kode' => 'B' . str_pad($number++, 5, '0', STR_PAD_LEFT),
             'nama' => $faker->foodName(),
-            'jumlah' => fake()->randomNumber(2, true),
+            'jumlah' => fake()->numberBetween(60, 90),
             'id_jenis_barang' => fake()->numberBetween(1, 2),
             'id_satuan_barang' => 1,
         ];

@@ -40,9 +40,10 @@ class RestockItem extends Notification
     public function toArray(object $notifiable): array
     {
         $amount = $this->barang->jumlah;
+        $namaBarang = $this->barang->nama;
 
         return [
-            'message' => "Barang Sudah Kurang dari $amount, ayo restock barang anda",
+            'message' => "Stok <b>$namaBarang</b> Sudah Kurang dari <b>$amount</b>, Ayo restock barang anda!",
         ];
     }
 }

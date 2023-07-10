@@ -7,6 +7,7 @@ use App\Models\Supplier;
 use App\Models\TransaksiMasuk;
 use App\Http\Requests\StoreTransaksiMasukRequest;
 use App\Http\Requests\UpdateTransaksiMasukRequest;
+use Illuminate\Support\Facades\DB;
 
 class TransaksiMasukController extends Controller
 {
@@ -45,21 +46,39 @@ class TransaksiMasukController extends Controller
      */
     public function store(StoreTransaksiMasukRequest $request)
     {
-        $transaksi = TransaksiMasuk::create([
-            'jumlah' => $request->post('jumlah'),
-            'barang_id' => $request->post('barang'),
-            'supplier_id' => $request->post('supplier'),
-            'tanggal_masuk' => $request->post('tanggal_masuk'),
-            'tanggal_expired' => $request->post('tanggal_expired'),
-        ]);
+        try {
+            DB::beginTransaction();
 
-        if ($transaksi instanceof TransaksiMasuk) {
-            //
-        } else {
-            //
+            $barangId = $request->post('barang');
+            $jumlah = (int) $request->post('jumlah');
+
+            $barang = Barang::find($barangId);
+            $barang->jumlah = $barang->jumlah + $jumlah;
+
+            TransaksiMasuk::create([
+                'jumlah' => $request->post('jumlah'),
+                'barang_id' => $request->post('barang'),
+                'supplier_id' => $request->post('supplier'),
+                'tanggal_masuk' => $request->post('tanggal_masuk'),
+                'tanggal_expired' => $request->post('tanggal_expired'),
+            ]);
+
+            $barang->save();
+
+            DB::commit();
+
+            return redirect()
+                ->route('in.index')
+                ->with('message', 'Berhasil menginput transaksi masuk')
+                ->with('type', 'success');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()
+                ->route('in.index')
+                ->with('message', $e->getMessage())
+                ->with('type', 'danger');
         }
-
-        return redirect()->route('in.index');
     }
 
     /**

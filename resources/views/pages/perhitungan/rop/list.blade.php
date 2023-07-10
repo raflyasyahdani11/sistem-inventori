@@ -37,9 +37,9 @@
                                         <th class="text-center align-middle" width="3%">No</th>
                                         <th class="text-center align-middle">Nama Produk</th>
                                         <th class="text-center align-middle">SS</th>
-                                        <th class="text-center align-middle">Lead Time</th>
-                                        <th class="text-center align-middle">Kebutuhan Tahunan</th>
-                                        <th class="text-center align-middle">Jumlah Hari Dalam Setahun</th>
+                                        <th class="text-center align-middle" width="15%">Lead Time</th>
+                                        <th class="text-center align-middle" width="15%">Kebutuhan Tahunan</th>
+                                        <th class="text-center align-middle" width="15%">Jumlah Hari Dalam Setahun</th>
                                         <th class="text-center align-middle">Hasil</th>
                                     </tr>
                                 </thead>
