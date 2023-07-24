@@ -17,18 +17,13 @@ return new class extends Migration
             "CREATE OR REPLACE VIEW $this->viewName AS " .
                 "SELECT
                     tk.barang_id,
-                    tk.supplier_id,
                     SUM(tk.jumlah) AS kebutuhan_setahun,
                     YEAR(tanggal_keluar) AS tahun_transaksi
                 FROM
                     transaksi_keluar tk
-                INNER JOIN barang b ON
-                    b.id = tk.barang_id
-                INNER JOIN supplier s ON
-                    s.id = tk.supplier_id
+                INNER JOIN barang b ON b.id = tk.barang_id
                 GROUP BY
                     barang_id,
-                    supplier_id,
                     YEAR(tanggal_keluar)"
         );
     }

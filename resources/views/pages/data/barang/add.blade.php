@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-5">
             <div class="card shadow">
                 <div class="card-body">
@@ -45,6 +45,16 @@
                             @enderror
                         </div>
                         <div class="form-group">
+                            <label for="input-harga">Harga Barang</label>
+                            <input type="number" class="form-control" id="input-harga" name="harga"
+                                aria-describedby="input-harga-help" value="{{ old('harga') }}">
+                            @error('harga')
+                                <small id="input-nama-help" class="form-text text-danger">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label for="input-password">Jumlah Barang</label>
                             <input type="number" class="form-control" id="input-password" name="jumlah"
                                 aria-describedby="input-password-help" value="{{ old('jumlah') }}">
@@ -66,6 +76,23 @@
                                 </select>
                             </div>
                             @error('satuan')
+                                <small id="input-nama-help" class="form-text text-danger">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="input-password">Supplier</label>
+                            <div class="form-group">
+                                <select class="form-control" id="exampleFormControlSelect1" name="supplier">
+                                    @foreach ($supplier as $item)
+                                        <option value="{{ $item->id }}" @selected($item->id == old('supplier'))>
+                                            {{ $item->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('supplier')
                                 <small id="input-nama-help" class="form-text text-danger">
                                     {{ $message }}
                                 </small>

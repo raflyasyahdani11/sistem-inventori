@@ -15,24 +15,21 @@ return new class extends Migration
     {
         DB::statement(
             "CREATE OR REPLACE VIEW $this->viewName AS " .
-                "SELECT
+                'SELECT
                     tk.barang_id,
-                    tk.supplier_id,
                     SUM(tk.jumlah) AS kebutuhan_satu_tahun,
-                    s.biaya_kirim AS biaya_kirim,
-                    s.biaya_kirim * 0.1 AS biaya_simpan,
-                    SQRT((s.lead_time * SUM(tk.jumlah) * s.biaya_kirim / (s.biaya_kirim * 0.1))) AS hasil,
+                    b.harga AS harga,
+                    b.harga * 0.1 AS biaya_simpan,
+                    SQRT((2 * SUM(tk.jumlah) * s.biaya_kirim / (b.harga * 0.1))) AS hasil,
                     YEAR(tanggal_keluar) as tahun_transaksi
                 FROM
                     transaksi_keluar tk
-                INNER JOIN barang b ON
-                    b.id = tk.barang_id
-                INNER JOIN supplier s ON
-                    s.id = tk.supplier_id
+                INNER JOIN barang b ON b.id = tk.barang_id
+                INNER JOIN supplier s ON s.id = b.id_supplier
                 GROUP BY
-                    barang_id, 
-                    supplier_id, 
-                    YEAR(tanggal_keluar)"
+                    barang_id,
+                    b.id_supplier,
+                    YEAR(tanggal_keluar)'
         );
     }
 

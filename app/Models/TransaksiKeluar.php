@@ -23,16 +23,12 @@ class TransaksiKeluar extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'tanggal_keluar', 'barang_id', 'tanggal_expired', 'supplier_id', 'jumlah',
+        'tanggal_keluar', 'barang_id', 'tanggal_expired',  'jumlah',
     ];
 
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class, 'barang_id', 'id');
+        return $this->belongsTo(Barang::class, 'barang_id', 'id')->withTrashed();
     }
 
-    public function supplier(): BelongsTo
-    {
-        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
-    }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -16,14 +16,17 @@ return new class extends Migration
             $table->string('kode')->unique();
             $table->string('nama');
             $table->integer('jumlah');
+            $table->integer('harga');
             $table->unsignedBigInteger('id_jenis_barang');
             $table->unsignedBigInteger('id_satuan_barang');
+            $table->unsignedBigInteger('id_supplier');
             $table->timestamps();
             $table->softDeletes();
             
             // Foreign Key
             $table->foreign('id_jenis_barang')->references('id')->on('jenis_barang');
             $table->foreign('id_satuan_barang')->references('id')->on('satuan_barang');
+            $table->foreign('id_supplier')->references('id')->on('supplier');
         });
     }
 

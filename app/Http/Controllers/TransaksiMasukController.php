@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Supplier;
 use App\Models\TransaksiMasuk;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreTransaksiMasukRequest;
 use App\Http\Requests\UpdateTransaksiMasukRequest;
-use Illuminate\Support\Facades\DB;
 
 class TransaksiMasukController extends Controller
 {
@@ -17,13 +17,11 @@ class TransaksiMasukController extends Controller
     public function index()
     {
         $title = 'List Transaksi Masuk';
-        $data = TransaksiMasuk::with([
-            'supplier', 'barang', 'barang.satuan_barang'
-        ])->get();
+        $data = TransaksiMasuk::with(['barang', 'barang.supplier', 'barang.satuan_barang'])
+            ->get();
 
         return view('pages.transaction.in.list')
-            ->with(compact('title'))
-            ->with(compact('data'));
+            ->with(compact('title', 'data'));
     }
 
     /**

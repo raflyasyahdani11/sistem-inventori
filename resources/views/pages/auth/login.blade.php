@@ -28,14 +28,6 @@
                                 <input type="password" class="form-control form-control-user" id="exampleInputPassword"
                                     name="password" placeholder="Password">
                             </div>
-                            <div class="form-group">
-                                <select class="form-control rounded-pill" id="exampleFormControlSelect1">
-                                    <option hidden>Masuk Sebagai</option>
-                                    <option>Admin</option>
-                                    <option>Pemilik Toko</option>
-                                    <option>Petugas Gudang</option>
-                                </select>
-                            </div>
                             <button type="submit" class="btn btn-primary btn-user btn-block">
                                 Login
                             </button>

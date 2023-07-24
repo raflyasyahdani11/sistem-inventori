@@ -29,9 +29,11 @@
                                         <th class="text-center align-middle" width="12%">Kode Barang</th>
                                         <th class="text-center align-middle">Nama Barang</th>
                                         <th class="text-center align-middle">Jenis Barang</th>
+                                        <th class="text-center align-middle">Harga Barang</th>
                                         <th class="text-center align-middle" width="8%">Jumlah Barang</th>
                                         <th class="text-center align-middle">Satuan</th>
-                                        <th class="text-center align-middle" width="15%">Aksi</th>
+                                        <th class="text-center align-middle">Supplier</th>
+                                        <th class="text-center align-middle" width="10%">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -41,8 +43,15 @@
                                             <td class="text-monospace">{{ $item->kode }}</td>
                                             <td>{{ $item->nama }}</td>
                                             <td>{{ $item->jenis_barang->nama }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-between text-monospace">
+                                                    <span>Rp.</span>
+                                                    <span>{{ number_format($item->harga, 0, ',', '.') }}</span>
+                                                </div>
+                                            </td>
                                             <td class="text-monospace text-right">{{ $item->jumlah }}</td>
                                             <td>{{ $item->satuan_barang->nama }}</td>
+                                            <td>{{ $item->supplier->nama }}</td>
                                             <td class="text-center">
                                                 <a class="btn btn-warning btn-sm" href="{{ route('barang.edit', $item) }}">
                                                     <span>
@@ -59,11 +68,11 @@
                                                         </span>
                                                     </button>
                                                 </form>
-                                                <a class="btn btn-info btn-sm" href="{{ route('barang.show', $item) }}">
+                                                {{-- <a class="btn btn-info btn-sm" href="{{ route('barang.show', $item) }}">
                                                     <span>
                                                         <i class="fas fa-search"></i>
                                                     </span>
-                                                </a>
+                                                </a> --}}
                                             </td>
                                         </tr>
                                     @endforeach

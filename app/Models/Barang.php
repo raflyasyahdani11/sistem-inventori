@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Barang extends Model
 {
@@ -35,6 +34,11 @@ class Barang extends Model
     public function satuan_barang(): BelongsTo
     {
         return $this->belongsTo(SatuanBarang::class, 'id_satuan_barang', 'id');
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class, 'id_supplier', 'id');
     }
 
     public function rop(): BelongsTo

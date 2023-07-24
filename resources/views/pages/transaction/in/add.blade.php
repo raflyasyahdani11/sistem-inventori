@@ -34,18 +34,6 @@
                             <label for="input-password">Jumlah Barang</label>
                             <input type="number" class="form-control" id="input-password" name="jumlah"
                                 aria-describedby="input-password-help">
-                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
-                        </div>
-                        <div class="form-group">
-                            <label for="input-password">Supplier</label>
-                            <div class="form-group">
-                                <select class="form-control" id="exampleFormControlSelect1" name="supplier">
-                                    @foreach ($supplier as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>

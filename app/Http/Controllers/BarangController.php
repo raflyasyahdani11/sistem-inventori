@@ -7,6 +7,7 @@ use App\Models\JenisBarang;
 use App\Models\SatuanBarang;
 use App\Http\Requests\StoreBarangRequest;
 use App\Http\Requests\UpdateBarangRequest;
+use App\Models\Supplier;
 
 class BarangController extends Controller
 {
@@ -16,7 +17,7 @@ class BarangController extends Controller
     public function index()
     {
         $title = 'List Data Barang';
-        $data = Barang::with(['jenis_barang', 'satuan_barang'])->get();
+        $data = Barang::with(['jenis_barang', 'satuan_barang', 'supplier'])->get();
 
         return view('pages.data.barang.list')
             ->with(compact('title', 'data'));
@@ -31,9 +32,10 @@ class BarangController extends Controller
 
         $jenisBarang = JenisBarang::all();
         $satuanBarang = SatuanBarang::all();
+        $supplier = Supplier::all();
 
         return view('pages.data.barang.add')
-            ->with(compact('title', 'jenisBarang', 'satuanBarang'));
+            ->with(compact('title', 'jenisBarang', 'satuanBarang', 'supplier'));
     }
 
     /**
@@ -46,6 +48,7 @@ class BarangController extends Controller
         $barang = Barang::create([
             'kode' => $validatedRequest['kode'],
             'nama' => $validatedRequest['nama'],
+            'harga' => $validatedRequest['harga'],
             'jumlah' => $validatedRequest['jumlah'],
             'id_jenis_barang' => $validatedRequest['jenis'],
             'id_satuan_barang' => $validatedRequest['satuan'],

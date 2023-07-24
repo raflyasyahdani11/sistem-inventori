@@ -25,6 +25,18 @@
                                 aria-describedby="input-username-help" autocomplete="off">
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
+                        <div class="form-group">
+                            <label for="input-username">Role</label>
+                            <div class="form-group">
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                    <option hidden>Pilih Role User</option>
+                                    @foreach ($roles as $item)
+                                        <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                        </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
                 </div>

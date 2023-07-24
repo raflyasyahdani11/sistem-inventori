@@ -23,7 +23,7 @@ class SupplierFactory extends Factory
             'alamat' => fake($locale)->address(),
             'telepon' => fake($locale)->unique()->phoneNumber(),
             'biaya_kirim' => fake()->randomNumber(4, true),
-            'lead_time' => fake()->numberBetween(3, 5),
+            'lead_time' => 2,
         ];
     }
 }

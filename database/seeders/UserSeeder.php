@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Permission\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -12,12 +13,28 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory()->create([
-            'name' => 'Diso Al',
-            'username' => 'diso',
-            'no_hp' => '08213128412',
-        ]);
+        \App\Models\User::factory()
+            ->create([
+                'name' => 'Diso Al',
+                'username' => 'diso',
+                'no_hp' => '08213128412',
+            ])
+            ->assignRole(Role::SUPER_ADMIN);
 
-        \App\Models\User::factory()->count(10)->create();
+        \App\Models\User::factory()
+            ->create([
+                'name' => 'Pemilik Toko',
+                'username' => 'pemilik_toko',
+            ])
+            ->each(function ($user) {
+                $user->assignRole(Role::PEMILIK_TOKO);
+            });
+
+        \App\Models\User::factory()
+            ->count(4)
+            ->create()
+            ->each(function ($user) {
+                $user->assignRole(Role::PETUGAS_GUDANG);
+            });
     }
 }

@@ -43,7 +43,7 @@
                                         <th class="text-center align-middle">Tanggal Masuk</th>
                                         <th class="text-center align-middle">Nama barang</th>
                                         <th class="text-center align-middle">Tanggal Expired</th>
-                                        <th class="text-center align-middle">Pengirim</th>
+                                        <th class="text-center align-middle">Supplier</th>
                                         <th class="text-center align-middle">Jumlah</th>
                                         <th class="text-center align-middle">Satuan</th>
                                         {{-- <th width="15%">Aksi</th> --}}
@@ -56,7 +56,7 @@
                                             <td>{{ date('j F Y', strtotime($item->tanggal_masuk)) }}</td>
                                             <td>{{ $item->barang->nama }}</td>
                                             <td>{{ date('j F Y', strtotime($item->tanggal_expired)) }}</td>
-                                            <td>{{ $item->supplier->nama }}</td>
+                                            <td>{{ $item->barang->supplier->nama }}</td>
                                             <td>{{ $item->jumlah }}</td>
                                             <td>{{ $item->barang->satuan_barang->nama }}</td>
                                             {{-- <td class="text-center">

@@ -18,10 +18,13 @@ class DatabaseSeeder extends Seeder
             JenisBarangSeeder::class,
             SupplierSeeder::class,
             BarangSeeder::class,
-            UserSeeder::class,
 
             TransaksiKeluarSeeder::class,
             TransaksiMasukSeeder::class,
+
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

@@ -39,16 +39,18 @@
                                                         <i class="fas fa-edit"></i>
                                                     </span>
                                                 </a>
-                                                <form class="d-inline formDelete" method="post"
-                                                    action="{{ route('user.destroy', $item) }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <span>
-                                                            <i class="fas fa-times-circle"></i>
-                                                        </span>
-                                                    </button>
-                                                </form>
+                                                @can('delete', $item)
+                                                    <form class="d-inline formDelete" method="post"
+                                                        action="{{ route('user.destroy', $item) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm">
+                                                            <span>
+                                                                <i class="fas fa-times-circle"></i>
+                                                            </span>
+                                                        </button>
+                                                    </form>
+                                                @endcan
                                                 <a class="btn btn-info btn-sm">
                                                     <span>
                                                         <i class="fas fa-search"></i>

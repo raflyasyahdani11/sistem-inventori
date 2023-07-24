@@ -39,7 +39,6 @@
                                         <th class="align-middle" width="20%">Total Kebutuhan Satu Tahun</th>
                                         <th class="align-middle">Biaya Kirim</th>
                                         <th class="align-middle">Biaya Simpan</th>
-                                        <th class="align-middle" width="10%">Lead Time</th>
                                         <th class="align-middle" width="10%">Hasil</th>
                                     </tr>
                                 </thead>
@@ -62,9 +61,6 @@
                                                     <span>Rp. </span>
                                                     <span>{{ number_format($item->biaya_simpan, 0, ',', '.') }}</span>
                                                 </div>
-                                            </td>
-                                            <td class="text-right text-monospace">
-                                                {{ $item->supplier->lead_time }}
                                             </td>
                                             <td class="text-right text-monospace">
                                                 {{ number_format(round($item->hasil), 0, ',', '.') }}

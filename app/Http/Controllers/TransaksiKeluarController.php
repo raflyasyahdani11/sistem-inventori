@@ -21,7 +21,9 @@ class TransaksiKeluarController extends Controller
     public function index()
     {
         $title = 'List Transaksi Keluar';
-        $data = TransaksiKeluar::with(['barang'])->orderBy('tanggal_expired', 'asc')->get();
+        $data = TransaksiKeluar::with(['barang', 'barang.supplier'])
+            ->orderBy('tanggal_expired', 'asc')
+            ->get();
 
         return view('pages.transaction.out.list')
             ->with(compact('title', 'data'));

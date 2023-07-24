@@ -10,10 +10,11 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use App\Models\TransaksiMasuk;
 use App\Models\TransaksiKeluar;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TransaksiMasukExport;
 use App\Exports\TransaksiKeluarExport;
 use App\Http\Requests\DownloadReportTransactionInRequest;
 use App\Http\Requests\DownloadReportTransactionOutRequest;
-use Maatwebsite\Excel\Facades\Excel;
 
 class WebController extends Controller
 {
@@ -39,6 +40,22 @@ class WebController extends Controller
             ->with(compact('title'));
     }
 
+    public function showReportKeluar()
+    {
+        $title = 'Laporan Transaksi Keluar';
+
+        return view('pages.report.keluar.index')
+            ->with(compact('title'));
+    }
+
+    public function showReportMasuk()
+    {
+        $title = 'Laporan Transaksi Masuk';
+
+        return view('pages.report.masuk.index')
+            ->with(compact('title'));
+    }
+
     public function showLogin()
     {
         $title = 'Login';
@@ -51,14 +68,17 @@ class WebController extends Controller
     {
         $title = 'Perhitungan EOQ';
 
-        $yearNow = (int) date('Y') - 1;
-        $year = $request->get('year', $yearNow);
+        $yearNow = (int) date('Y');
+        $yearsAgo = $yearNow - 1;
+        $year = $request->get('year', $yearsAgo);
 
         $years = Eoq::select('tahun_transaksi')
             ->distinct()
             ->orderBy('tahun_transaksi', 'desc')
             ->pluck('tahun_transaksi')
-            ->except([$yearNow])
+            ->reject(function (int $value, int $key) use ($yearNow) {
+                return $value == $yearNow;
+            })
             ->toArray();
 
         $data = Eoq::with(['barang', 'supplier'])
@@ -74,14 +94,17 @@ class WebController extends Controller
     {
         $title = 'Perhitungan SS';
 
-        $yearNow = (int) date('Y') - 1;
-        $year = $request->get('year', $yearNow);
+        $yearNow = (int) date('Y');
+        $yearsAgo = $yearNow - 1;
+        $year = $request->get('year', $yearsAgo);
 
         $years = Ss::select('tahun_transaksi')
             ->distinct()
             ->orderBy('tahun_transaksi', 'desc')
             ->pluck('tahun_transaksi')
-            ->except([$yearNow])
+            ->reject(function (int $value, int $key) use ($yearNow) {
+                return $value == $yearNow;
+            })
             ->toArray();
 
         $data = Ss::where('tahun_transaksi', $year)
@@ -96,8 +119,9 @@ class WebController extends Controller
     {
         $title = 'Perhitungan ROP';
 
-        $yearNow = (int) date('Y') - 1;
-        $year = $request->get('year', $yearNow);
+        $yearNow = (int) date('Y');
+        $yearsAgo = $yearNow - 1;
+        $year = $request->get('year', $yearsAgo);
 
         $data = Rop::where('tahun_transaksi', $year)
             ->orderBy('barang_id')
@@ -107,11 +131,38 @@ class WebController extends Controller
             ->distinct()
             ->orderBy('tahun_transaksi', 'desc')
             ->pluck('tahun_transaksi')
-            ->except([$yearNow])
+            ->reject(function (int $value, int $key) use ($yearNow) {
+                return $value == $yearNow;
+            })
             ->toArray();
 
 
         return view('pages.perhitungan.rop.list')
+            ->with(compact('title', 'data', 'years', 'year'));
+    }
+
+    public function showPerhitungan(Request $request)
+    {
+        $title = 'Perhitungan';
+
+        $yearNow = (int) date('Y');
+        $yearsAgo = $yearNow - 1;
+        $year = $request->get('year', $yearsAgo);
+
+        $data = Rop::where('tahun_transaksi', $year)
+            ->orderBy('barang_id')
+            ->get();
+
+        $years = Rop::select('tahun_transaksi')
+            ->distinct()
+            ->orderBy('tahun_transaksi', 'desc')
+            ->pluck('tahun_transaksi')
+            ->reject(function (int $value, int $key) use ($yearNow) {
+                return $value == $yearNow;
+            })
+            ->toArray();
+
+        return view('pages.perhitungan.list')
             ->with(compact('title', 'data', 'years', 'year'));
     }
 
@@ -137,14 +188,14 @@ class WebController extends Controller
         $from = $date->toDateString();
         $to = $date->endOfMonth()->toDateString();
 
-        $transaksiKeluar = TransaksiKeluar::with(['barang', 'supplier'])
+        $transaksiKeluar = TransaksiKeluar::with(['barang', 'barang.supplier'])
             ->whereBetween('tanggal_keluar', [$from, $to])
             ->get()
             ->map(function ($value) {
                 return [
                     'kode_barang' => $value->barang->kode,
                     'nama_barang' => $value->barang->nama,
-                    'nama_supplier' => $value->supplier->nama,
+                    'nama_supplier' => $value->barang->supplier->nama,
                     'jumlah_barang' => $value->jumlah,
                     'tanggal_keluar' => $value->tanggal_keluar,
                     'tanggal_expired' => $value->tanggal_expired,
@@ -161,38 +212,38 @@ class WebController extends Controller
     }
 
     public function downloadReportTransactionIn(DownloadReportTransactionInRequest $request)
-   {
-      $validatedRequest = $request->validated();
+    {
+        $validatedRequest = $request->validated();
 
-      $tahun = $validatedRequest['tahun'];
-      $bulan = $validatedRequest['bulan'];
-      $bulanString = str_pad($bulan, 2, '0', STR_PAD_LEFT); // dari 1, 2, 3 -> jadi 01, 02, 03
+        $tahun = $validatedRequest['tahun'];
+        $bulan = $validatedRequest['bulan'];
+        $bulanString = str_pad($bulan, 2, '0', STR_PAD_LEFT); // dari 1, 2, 3 -> jadi 01, 02, 03
 
-      $date = \Carbon\Carbon::parse("$tahun-$bulanString-01");
+        $date = \Carbon\Carbon::parse("$tahun-$bulanString-01");
 
-      $from = $date->toDateString();
-      $to = $date->endOfMonth()->toDateString();
+        $from = $date->toDateString();
+        $to = $date->endOfMonth()->toDateString();
 
-      $transaksiMasuk = TransaksiMasuk::with(['barang', 'supplier'])
-         ->whereBetween('tanggal_masuk', [$from, $to])
-         ->get()
-         ->map(function ($value) {
-            return [
-               'kode_barang' => $value->barang->kode,
-               'nama_barang' => $value->barang->nama,
-               'nama_supplier' => $value->supplier->nama,
-               'jumlah_barang' => $value->jumlah,
-               'tanggal_masuk' => $value->tanggal_masuk,
-               'tanggal_expired' => $value->tanggal_expired,
-            ];
-         })
-         ->toArray();
+        $transaksiMasuk = TransaksiMasuk::with(['barang', 'barang.supplier'])
+            ->whereBetween('tanggal_masuk', [$from, $to])
+            ->get()
+            ->map(function ($value) {
+                return [
+                    'kode_barang' => $value->barang->kode,
+                    'nama_barang' => $value->barang->nama,
+                    'nama_supplier' => $value->barang->supplier->nama,
+                    'jumlah_barang' => $value->jumlah,
+                    'tanggal_masuk' => $value->tanggal_masuk,
+                    'tanggal_expired' => $value->tanggal_expired,
+                ];
+            })
+            ->toArray();
 
-      $fileExport = new TransaksiMasuk($transaksiMasuk);
-      $fileName = "transaksi_masuk.xlsx";
-      $response = Excel::download($fileExport, $fileName);
-      ob_end_clean();
+        $fileExport = new TransaksiMasukExport($transaksiMasuk);
+        $fileName = "transaksi_masuk.xlsx";
+        $response = Excel::download($fileExport, $fileName);
+        ob_end_clean();
 
-      return $response;
-   }
+        return $response;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Permission\Role;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,16 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect()->route(RouteServiceProvider::HOME);
+                // switch (Auth::user()->roles)
+                $route = RouteServiceProvider::HOME;
+
+                $role = Auth::user()->hasRole(Role::PETUGAS_GUDANG);
+
+                if ($role) {
+                    $route = RouteServiceProvider::PETUGAS_GUDANG_HOME;
+                }
+
+                return redirect()->route($route);
             }
         }
 

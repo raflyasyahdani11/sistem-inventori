@@ -15,12 +15,10 @@ return new class extends Migration
             $table->id();
             $table->dateTime('tanggal_masuk');
             $table->dateTime('tanggal_expired');
-            $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('barang_id');
             $table->integer('jumlah');
             $table->timestamps();
 
-            $table->foreign('supplier_id')->references('id')->on('supplier');
             $table->foreign('barang_id')->references('id')->on('barang');
         });
     }

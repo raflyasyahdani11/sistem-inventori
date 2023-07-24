@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TransaksiMasuk extends Model
 {
@@ -23,16 +23,12 @@ class TransaksiMasuk extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'tanggal_masuk', 'barang_id', 'tanggal_expired', 'supplier_id', 'jumlah',
+        'tanggal_masuk', 'barang_id', 'tanggal_expired', 'jumlah',
     ];
 
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class, 'barang_id', 'id');
+        return $this->belongsTo(Barang::class, 'barang_id', 'id')->withTrashed();
     }
 
-    public function supplier(): BelongsTo
-    {
-        return $this->belongsTo(Supplier::class, 'supplier_id', 'id');
-    }
 }

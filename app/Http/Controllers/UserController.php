@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Permission\Role as PermissionRole;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -28,8 +30,10 @@ class UserController extends Controller
     public function create()
     {
         $title = 'Tambah Pengguna';
+        $roles = Role::where('name', '!=', PermissionRole::SUPER_ADMIN)->get();
 
-        return view('pages.user.add')->with(compact('title'));
+        return view('pages.user.add')
+            ->with(compact('title', 'roles'));
     }
 
     /**

@@ -22,13 +22,10 @@ class TransaksiKeluarFactory extends Factory
         $tanggalExpired = clone $tanggalKeluar;
         $tanggalExpired->add(new DateInterval('P3M'));
 
-        $idSuppBar = fake()->numberBetween(1, 10);
-
         return [
             'tanggal_keluar' => $tanggalKeluar,
             'tanggal_expired' => $tanggalExpired,
-            'barang_id' => $idSuppBar,
-            'supplier_id' => $idSuppBar,
+            'barang_id' => fake()->numberBetween(1, 10),
             'jumlah' => fake()->randomNumber(2),
         ];
     }

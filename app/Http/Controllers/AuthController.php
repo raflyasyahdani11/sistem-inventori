@@ -15,7 +15,7 @@ class AuthController extends Controller
         $isSuccess = Auth::attempt($input);
 
         if ($isSuccess) {
-            return redirect()->route('dashboard');
+            return redirect()->route('auth.login');
         }
 
         return redirect()->back();
