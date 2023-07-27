@@ -1,5 +1,8 @@
 const barangSelect = document.getElementById("barang");
 const stokLabel = document.getElementById("stok");
+const ropLabel = document.getElementById("rop");
+const tanggalExpiredDatePicker = document.getElementById("tanggal_expired");
+const tanggalKeluarDatePicker = document.getElementById("tanggal_keluar");
 
 barangSelect.addEventListener("change", async () => {
     try {
@@ -12,8 +15,18 @@ barangSelect.addEventListener("change", async () => {
 
         if (response.ok) {
             const { data } = payload;
+            const { jumlah, min_exp_date, rop } = data;
 
-            stokLabel.innerHTML = data.jumlah;
+            const expDate = new Date(min_exp_date).toISOString();
+            const expDateStr = expDate.split("T")[0];
+
+            const outDate = new Date().toISOString();
+            const outDateStr = outDate.split("T")[0];
+
+            stokLabel.innerHTML = jumlah;
+            ropLabel.innerHTML = Math.round(rop);
+            tanggalExpiredDatePicker.value = expDateStr;
+            tanggalKeluarDatePicker.value = outDateStr;
         } else {
             Swal.fire(payload.message, payload?.additional_info, "error");
         }

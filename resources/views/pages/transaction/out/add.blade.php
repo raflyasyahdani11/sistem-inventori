@@ -25,22 +25,29 @@
                         </div>
                         <div class="form-group">
                             <label for="input-name">Tanggal Keluar</label>
-                            <input type="date" class="form-control" id="input-phone" name="tanggal_keluar"
-                                aria-describedby="input-phone-help">
-                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                            <input type="date" class="form-control" id="tanggal_keluar" name="tanggal_keluar"
+                                aria-describedby="tanggal_keluar-help" readonly>
+                            @error('tanggal_keluar')
+                                <small id="input-nama-help" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="input-username">Tanggal Expired</label>
-                            <input type="date" class="form-control" id="input-phone" name="tanggal_expired"
-                                aria-describedby="input-phone-help">
-                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                            <input type="date" class="form-control" id="tanggal_expired" name="tanggal_expired"
+                                aria-describedby="input-phone-help" readonly>
+                            @error('tanggal_expired')
+                                <small id="input-nama-help" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="input-password">Jumlah Barang</label>
                             <input type="number" class="form-control" id="input-password" name="jumlah"
                                 aria-describedby="input-password-help">
                             <small id="input-nama-help" class="form-text text-muted">
-                                Stok : <span id="stok">0</span>
+                                Stok : <span id="stok">0</span> | Batas Aman Stok : <span id="rop">0</span>
+                                @error('jumlah')
+                                    | <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </small>
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>

@@ -22,30 +22,53 @@ class Rop extends Model
         return $this->hasOne(Barang::class, 'id', 'barang_id');
     }
 
-    function supplier(): HasOne
+    protected function penjualanMax(): Attribute
     {
-        return $this->hasOne(Supplier::class, 'id', 'supplier_id');
+        return Attribute::make(
+            function () {
+                $penjualanMax = $this
+                    ->all()
+                    ->where('tahun_transaksi', $this->tahun_transaksi)
+                    ->pluck('kebutuhan_setahun')
+                    ->map(function ($value) {
+                        return (int) $value;
+                    })
+                    ->max();
+
+                return round($penjualanMax);
+            }
+        );
     }
 
     protected function ss(): Attribute
     {
         return Attribute::make(
             function () {
-                $dayInYear = (int) date('z', mktime(0, 0, 0, 12, 31, $this->tahun_transaksi)) + 1;
-                $hasil = (int) $this->kebutuhan_setahun / $dayInYear * $this->barang->supplier->lead_time;
+                $kebutuhanSetahun = $this->kebutuhan_setahun;
+                $totalTransaksi = $this->total_transaksi;
+                $penjualanMax = $this->penjualan_maksimal;
+                $leadTime = $this->barang->supplier->lead_time;
+
+                $hasil = round(($penjualanMax - ($kebutuhanSetahun / $totalTransaksi)) * $leadTime);
 
                 return $hasil;
             }
         );
     }
 
-
     protected function hasil(): Attribute
     {
         return Attribute::make(
             function () {
-                $dayInYear = (int) date('z', mktime(0, 0, 0, 12, 31, $this->tahun_transaksi)) + 1;
-                $hasil = $this->ss + ($this->barang->supplier->lead_time * (int) $this->kebutuhan_setahun / $dayInYear);
+                $kebutuhanSetahun = $this->kebutuhan_setahun;
+                $totalTransaksi = $this->total_transaksi;
+                $penjualanMax = $this->penjualan_maksimal;
+                $leadTime = $this->barang->supplier->lead_time;
+
+                // $dayInYear = (int) date('z', mktime(0, 0, 0, 12, 31, $this->tahun_transaksi)) + 1;
+                // $hasil = $this->ss + ($this->barang->supplier->lead_time * (int) $this->kebutuhan_setahun / $dayInYear);
+
+                $hasil = round((($kebutuhanSetahun / $totalTransaksi / 30) * $leadTime) + $this->ss);
 
                 return $hasil;
             }

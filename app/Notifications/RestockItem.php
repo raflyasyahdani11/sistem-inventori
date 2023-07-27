@@ -43,7 +43,7 @@ class RestockItem extends Notification
         $namaBarang = $this->barang->nama;
 
         return [
-            'message' => "Stok <b>$namaBarang</b> Sudah Kurang dari <b>$amount</b>, Ayo restock barang anda!",
+            'message' => "Stok <b>$namaBarang</b> Sudah <b>$amount</b>, Ayo restock barang anda!",
         ];
     }
 }

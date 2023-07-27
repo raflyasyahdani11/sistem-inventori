@@ -22,7 +22,18 @@ class StoreTransaksiKeluarRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'jumlah' => ['required', 'numeric'],
+            'tanggal_keluar' => ['required'],
+            'tanggal_expired' => ['required'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'jumlah' => 'Jumlah',
+            'tanggal_keluar' => 'Tanggal Keluar',
+            'tanggal_expired' => 'Tanggal Expired',
         ];
     }
 }

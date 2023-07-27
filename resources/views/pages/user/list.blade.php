@@ -22,6 +22,9 @@
                                         <th width="3%">No</th>
                                         <th>Nama</th>
                                         <th>No Hp</th>
+                                        @can(\App\Permission\Role::SUPER_ADMIN)
+                                            <th>Role</th>
+                                        @endcan
                                         <th>Username</th>
                                         <th width="15%">Aksi</th>
                                     </tr>
@@ -32,6 +35,9 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->no_hp }}</td>
+                                            @can(\App\Permission\Role::SUPER_ADMIN)
+                                                <td>{{ $item->roles->pluck('name')->implode(', ') }}</td>
+                                            @endcan
                                             <td>{{ $item->username }}</td>
                                             <td class="text-center">
                                                 <a href="{{ route('user.edit', $item) }}" class="btn btn-warning btn-sm">

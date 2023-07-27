@@ -25,7 +25,7 @@ class RedirectIfAuthenticated
                 // switch (Auth::user()->roles)
                 $route = RouteServiceProvider::HOME;
 
-                $role = Auth::user()->hasRole(Role::PETUGAS_GUDANG);
+                $role = Auth::user()->hasRole(Role::KARYAWAN);
 
                 if ($role) {
                     $route = RouteServiceProvider::PETUGAS_GUDANG_HOME;

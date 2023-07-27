@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Barang extends Model
 {
@@ -41,8 +43,13 @@ class Barang extends Model
         return $this->belongsTo(Supplier::class, 'id_supplier', 'id');
     }
 
-    public function rop(): BelongsTo
+    public function rop(): HasMany
     {
-        return $this->BelongsTo(Rop::class, 'barang_id', 'id');
+        return $this->hasMany(Rop::class, 'barang_id', 'id');
+    }
+
+    public function transaksi_masuk(): HasMany
+    {
+        return $this->hasMany(TransaksiMasuk::class, 'barang_id', 'id');
     }
 }

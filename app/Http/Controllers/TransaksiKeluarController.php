@@ -9,7 +9,9 @@ use App\Models\Supplier;
 use App\Models\TransaksiKeluar;
 use App\Notifications\RestockItem;
 use Illuminate\Support\Facades\DB;
+use App\Events\TransactionOutSuccessful;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StoreTransaksiKeluarRequest;
 use App\Http\Requests\UpdateTransaksiKeluarRequest;
 
@@ -56,11 +58,6 @@ class TransaksiKeluarController extends Controller
             $jumlah = (int) $request->post('jumlah');
 
             $barang = Barang::find($barangId);
-            $lastYear = (int) date('Y') - 1;
-
-            $rop = Rop::where('barang_id', $barangId)
-                ->where('tahun_transaksi', $lastYear)
-                ->first();
 
             if ($jumlah > $barang->jumlah) {
                 throw new \Exception("Stock barang kurang dari $jumlah");
@@ -68,7 +65,7 @@ class TransaksiKeluarController extends Controller
 
             $barang->jumlah = $barang->jumlah - $jumlah;
 
-            TransaksiKeluar::create([
+            $transaksiKeluar = TransaksiKeluar::create([
                 'jumlah' => $request->post('jumlah'),
                 'barang_id' => $request->post('barang'),
                 'supplier_id' => $request->post('supplier'),
@@ -78,9 +75,7 @@ class TransaksiKeluarController extends Controller
 
             $barang->save();
 
-            if ($rop && $barang->jumlah < round($rop->hasil)) {
-                Notification::send(User::all(), new RestockItem($barang));
-            }
+            TransactionOutSuccessful::dispatch($transaksiKeluar);
 
             DB::commit();
 
@@ -90,6 +85,13 @@ class TransaksiKeluarController extends Controller
                 ->with('type', 'success');
         } catch (\Exception $e) {
             DB::rollback();
+
+            if ($e instanceof ValidationException) {
+                return redirect()
+                    ->back()
+                    ->withErrors($e->errors())
+                    ->withInput();
+            }
 
             return redirect()
                 ->route('out.index')

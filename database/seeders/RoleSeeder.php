@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
     {
         Role::create(['name' => PermissionRole::SUPER_ADMIN]);
         $pemilikToko = Role::create(['name' => PermissionRole::PEMILIK_TOKO]);
-        $petugasGudang = Role::create(['name' => PermissionRole::PETUGAS_GUDANG]);
+        $karyawan = Role::create(['name' => PermissionRole::KARYAWAN]);
 
         $pemilikToko->givePermissionTo(Permission::LIHAT_DASHBOARD);
         $pemilikToko->givePermissionTo(Permission::KELOLA_DATA_PENGGUNA);
@@ -27,9 +27,9 @@ class RoleSeeder extends Seeder
         $pemilikToko->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_KELUAR);
         $pemilikToko->givePermissionTo(Permission::LIHAT_LAPORAN_TRANSAKSI);
 
-        $petugasGudang->givePermissionTo(Permission::KELOLA_DATA_BARANG);
-        $petugasGudang->givePermissionTo(Permission::KELOLA_DATA_SUPPLIER);
-        $petugasGudang->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_MASUK);
-        $petugasGudang->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_KELUAR);
+        $karyawan->givePermissionTo(Permission::KELOLA_DATA_BARANG);
+        $karyawan->givePermissionTo(Permission::KELOLA_DATA_SUPPLIER);
+        $karyawan->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_MASUK);
+        $karyawan->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_KELUAR);
     }
 }

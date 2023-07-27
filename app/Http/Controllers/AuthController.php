@@ -18,13 +18,16 @@ class AuthController extends Controller
             return redirect()->route('auth.login');
         }
 
-        return redirect()->back();
+        $message = 'User atau password salah';
+        $type = 'danger';
+
+        return redirect()->back()->with(compact('message', 'type'))->withInput();
     }
 
     function logout()
     {
         Auth::logout();
-        
+
         return redirect()->route('auth.login');
     }
 }

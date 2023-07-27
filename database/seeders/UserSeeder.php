@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         \App\Models\User::factory()
             ->create([
                 'name' => 'Pemilik Toko',
-                'username' => 'pemilik_toko',
+                'username' => 'pemilik.toko',
             ])
             ->each(function ($user) {
                 $user->assignRole(Role::PEMILIK_TOKO);
@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             ->count(4)
             ->create()
             ->each(function ($user) {
-                $user->assignRole(Role::PETUGAS_GUDANG);
+                $user->assignRole(Role::KARYAWAN);
             });
     }
 }
