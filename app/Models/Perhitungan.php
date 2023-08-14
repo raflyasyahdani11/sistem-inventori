@@ -85,7 +85,8 @@ class Perhitungan extends Model
                 $biayaSimpan = $this->barang->harga * 0.1;
 
                 $hasil = sqrt(2 * $kebutuhanSetahun * $biayaKirim / ($biayaSimpan));
-                return $hasil;
+                
+                return round($hasil);
             }
         );
     }

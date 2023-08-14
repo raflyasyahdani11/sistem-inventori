@@ -11,7 +11,7 @@ class Init extends Command
      *
      * @var string
      */
-    protected $signature = 'init';
+    protected $signature = 'init {--prod}';
 
     /**
      * The console command description.
@@ -25,8 +25,15 @@ class Init extends Command
      */
     public function handle(): void
     {
-        $this->call('migrate:refresh');
-        $this->call('db:seed');
-        $this->call('app:check-expired-items');
+        $isProduction = $this->option('prod');
+
+        if (!$isProduction) {
+            $this->call('migrate:refresh');
+            $this->call('db:seed');
+            $this->call('app:check-expired-items');
+        } else {
+            $this->call('migrate:refresh');
+            $this->call('db:seed');
+        }
     }
 }

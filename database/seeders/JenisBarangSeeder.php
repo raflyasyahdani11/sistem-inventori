@@ -13,8 +13,14 @@ class JenisBarangSeeder extends Seeder
     public function run(): void
     {
         \App\Models\JenisBarang::factory()->createMany([
-            ['nama' => 'Makanan'],
-            ['nama' => 'Minuman'],
+            ['nama' => 'Makanan'],              // 1
+            ['nama' => 'Minuman'],              // 2
+            ['nama' => 'Sabun'],                // 3
+            ['nama' => 'Pasta Gigi'],           // 4
+            ['nama' => 'Detergen'],             // 5
+            ['nama' => 'Pembersih Lantai'],     // 6
+            ['nama' => 'Minyak Goreng'],        // 7
+            ['nama' => 'Shampo'],               // 8    
         ]);
     }
 }
