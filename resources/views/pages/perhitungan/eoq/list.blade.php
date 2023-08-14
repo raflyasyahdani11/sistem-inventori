@@ -63,7 +63,7 @@
                                                 </div>
                                             </td>
                                             <td class="text-right text-monospace">
-                                                {{ number_format(round($item->hasil), 0, ',', '.') }}
+                                                {{ number_format(round($item->rop), 0, ',', '.') }}
                                             </td>
                                         </tr>
                                     @endforeach

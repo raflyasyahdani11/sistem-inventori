@@ -33,6 +33,12 @@
                                 aria-describedby="input-password-help">
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
+                        <div class="form-group">
+                            <label for="biaya_kirim">Lead Time</label>
+                            <input type="number" class="form-control" id="lead_time" name="lead_time"
+                                aria-describedby="input-password-help" value="{{ old('lead_time', $supplier->lead_time) }}">
+                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                        </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
                 </div>

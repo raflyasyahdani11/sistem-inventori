@@ -22,7 +22,26 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => ['required'],
+            'no_hp' => ['required'],
+            'username' => ['required'],
+            'password' => ['required', 'min:6'],
+            'role' => ['required'],
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'nama' => 'Nama',
+            'no_hp' => 'No Hp',
+            'username' => 'Username',
+            'password' => 'Password',
         ];
     }
 }

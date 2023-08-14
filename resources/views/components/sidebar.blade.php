@@ -1,11 +1,11 @@
-<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #295ea0;">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/" style="color: #ffd569;">
+        <div class="sidebar-brand-icon ">
+            <i class="fas fa-store"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text ml-2 ">Toko Runna</div>
     </a>
 
     <!-- Divider -->
@@ -100,12 +100,12 @@
                     <h6 class="collapse-header">Menu :</h6>
                     @can(\App\Permission\Permission::KELOLA_DATA_TRANSAKSI_MASUK)
                         <a @class(['collapse-item', 'active' => Request::routeIs('in.*')]) href="{{ route('in.index') }}">
-                            Masuk
+                            Pembelian
                         </a>
                     @endcan
                     @can(\App\Permission\Permission::KELOLA_DATA_TRANSAKSI_KELUAR)
                         <a @class(['collapse-item', 'active' => Request::routeIs('out.*')]) href="{{ route('out.index') }}">
-                            Keluar
+                            Penjualan
                         </a>
                     @endcan
                 </div>
@@ -192,13 +192,13 @@
                         'collapse-item',
                         'active' => Request::routeIs('report.masuk'),
                     ]) href="{{ route('report.masuk') }}">
-                        Barang Masuk
+                        Pembelian
                     </a>
                     <a @class([
                         'collapse-item',
                         'active' => Request::routeIs('report.keluar'),
                     ]) href="{{ route('report.keluar') }}">
-                        Barang Keluar
+                        Penjualan
                     </a>
                 </div>
             </div>

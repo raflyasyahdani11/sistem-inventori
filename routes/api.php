@@ -22,21 +22,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/barang/{barang}', function (Barang $barang) {
-    $trxMasukBarang = $barang->transaksi_masuk
-        ->whereBetween('tanggal_expired', [
-            Carbon::now()->firstOfYear()->toDateTimeString(),
-            Carbon::now()->lastOfYear()->toDateTimeString(),
-        ])
-        ->min('tanggal_expired');
+    $trxMasukRaw = $barang->transaksi_masuk
+        ->where('tanggal_expired', '>=', Carbon::now()->toDateString())
+        ->where('jumlah_sekarang', '>', 0)
+        ->sortBy('tanggal_expired');
 
-    $rop = $barang->rop->firstWhere('tahun_transaksi', Carbon::now()->subYear(1)->year);
+    $trxMasuk = $trxMasukRaw->first();
+
+    $perhitungan = $barang->perhitungan->firstWhere('tahun_transaksi', Carbon::now()->subYear(1)->year);
 
     return response()->json([
         'message' => 'berhasil mengambil data barang',
         'data' => [
-            'jumlah' => $barang->jumlah,
-            'min_exp_date' => $trxMasukBarang,
-            'rop' => $rop->hasil,
+            'trx_masuk_id' => $trxMasuk->id,
+            'jumlah' => $trxMasuk->jumlah_sekarang,
+            'min_exp_date' => $trxMasuk->tanggal_expired,
+            'rop' => $perhitungan->rop,
         ]
     ]);
 });

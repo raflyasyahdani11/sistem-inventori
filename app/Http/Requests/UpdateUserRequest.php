@@ -22,7 +22,26 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'nama' => ['required'],
+            'no_hp' => ['required'],
+            'username' => ['required'],
+            'role' => ['required'],
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'nama' => 'Nama',
+            'no_hp' => 'No Hp',
+            'username' => 'Username',
+            'role' => 'Role',
+            'password' => 'Password',
         ];
     }
 }

@@ -26,10 +26,12 @@ class RoleSeeder extends Seeder
         $pemilikToko->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_MASUK);
         $pemilikToko->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_KELUAR);
         $pemilikToko->givePermissionTo(Permission::LIHAT_LAPORAN_TRANSAKSI);
+        $pemilikToko->givePermissionTo(Permission::LIHAT_LAPORAN_PERHITUNGAN);
 
         $karyawan->givePermissionTo(Permission::KELOLA_DATA_BARANG);
         $karyawan->givePermissionTo(Permission::KELOLA_DATA_SUPPLIER);
         $karyawan->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_MASUK);
         $karyawan->givePermissionTo(Permission::KELOLA_DATA_TRANSAKSI_KELUAR);
+        $karyawan->givePermissionTo(Permission::LIHAT_LAPORAN_PERHITUNGAN);
     }
 }

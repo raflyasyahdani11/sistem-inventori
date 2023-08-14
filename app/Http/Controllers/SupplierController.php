@@ -83,6 +83,7 @@ class SupplierController extends Controller
             'alamat' => $request->post('alamat'),
             'telepon' => $request->post('telepon'),
             'biaya_kirim' => $request->post('biaya_kirim'),
+            'lead_time' => $request->post('lead_time'),
         ]);
 
         if ($updatedRow > 0) {

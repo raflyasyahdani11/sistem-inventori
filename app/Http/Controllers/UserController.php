@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Permission\Role as PermissionRole;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -45,11 +44,11 @@ class UserController extends Controller
             'name' => $request->post('nama'),
             'username' => $request->post('username'),
             'no_hp' => $request->post('no_hp'),
-            'password' => password_hash('123456', PASSWORD_DEFAULT),
+            'password' => password_hash($request->post('password'), PASSWORD_DEFAULT),
         ]);
 
         if ($user instanceof User) {
-            //
+            $user->assignRole($request->post('role'));
         } else {
             //
         }
@@ -71,10 +70,11 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $title = 'Edit Pengguna';
+        $roles = Role::where('name', '!=', PermissionRole::SUPER_ADMIN)->get();
 
         return view('pages.user.edit')
             ->with(compact('title'))
-            ->with(compact('user'));
+            ->with(compact('user', 'roles'));
     }
 
     /**
@@ -82,7 +82,25 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $updatedRow = $user->update([
+            'name' => $request->post('nama'),
+            'username' => $request->post('username'),
+            'no_hp' => $request->post('no_hp'),
+        ]);
+
+        if ($updatedRow > 0) {
+            $user->syncRoles($request->post('role'));
+            
+            if ($request->post('password')) {
+                $user->update([
+                    'password' => password_hash($request->post('password'), PASSWORD_DEFAULT),
+                ]);
+            }
+        } else {
+            // Gagal Update
+        }
+
+        return redirect()->route('user.index');
     }
 
     /**
@@ -90,6 +108,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $isDeleted = $user->delete();
+
+        if ($isDeleted) {
+            // Berhasil Delete
+        } else {
+            // Gagal Delete
+        }
+
+        return redirect()->route('user.index');
     }
 }

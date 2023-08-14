@@ -24,10 +24,11 @@ class StoreBarangRequest extends FormRequest
         return [
             'kode' => ['required', 'unique:barang,kode'],
             'nama' => ['required'],
-            'jumlah' => ['required', 'numeric'],
+            // 'jumlah' => ['required', 'numeric'],
             'harga' => ['required', 'numeric'],
             'jenis' => ['required'],
             'satuan' => ['required'],
+            'supplier' => ['required'],
         ];
     }
 
@@ -45,6 +46,7 @@ class StoreBarangRequest extends FormRequest
             'harga' => 'Harga',
             'jenis' => 'Jenis',
             'satuan' => 'Satuan',
+            'supplier' => 'Supplier',
         ];
     }
 

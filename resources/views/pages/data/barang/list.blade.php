@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@push('css')
+{{-- @push('css')
     @vite('resources/js/pages/datatable-custom.css')
-@endpush
+@endpush --}}
 
 @push('js')
     @vite('resources/js/pages/data/barang/list.js')
@@ -29,8 +29,8 @@
                                         <th class="text-center align-middle" width="12%">Kode Barang</th>
                                         <th class="text-center align-middle">Nama Barang</th>
                                         <th class="text-center align-middle">Jenis Barang</th>
-                                        <th class="text-center align-middle">Harga Barang</th>
-                                        <th class="text-center align-middle" width="8%">Jumlah Barang</th>
+                                        <th class="text-center align-middle">Harga Beli</th>
+                                        <th class="text-center align-middle" width="8%">Stok Barang</th>
                                         <th class="text-center align-middle">Satuan</th>
                                         <th class="text-center align-middle">Supplier</th>
                                         <th class="text-center align-middle" width="10%">Aksi</th>
@@ -49,7 +49,9 @@
                                                     <span>{{ number_format($item->harga, 0, ',', '.') }}</span>
                                                 </div>
                                             </td>
-                                            <td class="text-monospace text-right">{{ $item->jumlah }}</td>
+                                            <td class="text-monospace text-right">
+                                                {{ number_format($item->jumlah, 0, ',', '.') }}
+                                            </td>
                                             <td>{{ $item->satuan_barang->nama }}</td>
                                             <td>{{ $item->supplier->nama }}</td>
                                             <td class="text-center">

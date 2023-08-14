@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Permission\Role;
 use Closure;
+use App\Permission\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
@@ -26,9 +26,9 @@ class RedirectIfAuthenticated
                 $route = RouteServiceProvider::HOME;
 
                 $role = Auth::user()->hasRole(Role::KARYAWAN);
-
+                
                 if ($role) {
-                    $route = RouteServiceProvider::PETUGAS_GUDANG_HOME;
+                    $route = RouteServiceProvider::KARYAWAN_HOME;
                 }
 
                 return redirect()->route($route);

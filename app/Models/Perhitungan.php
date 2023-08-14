@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Rop extends Model
+class Perhitungan extends Model
 {
     /**
      * The table associated with the model.
@@ -44,31 +44,32 @@ class Rop extends Model
     {
         return Attribute::make(
             function () {
-                $kebutuhanSetahun = $this->kebutuhan_setahun;
-                $totalTransaksi = $this->total_transaksi;
+                $totalPenjualan = $this->kebutuhan_setahun;
+                $banyakPenjualan = $this->total_transaksi;
                 $penjualanMax = $this->penjualan_maksimal;
+
+                $penjualanRataRata = ($totalPenjualan / $banyakPenjualan);
                 $leadTime = $this->barang->supplier->lead_time;
 
-                $hasil = round(($penjualanMax - ($kebutuhanSetahun / $totalTransaksi)) * $leadTime);
+                $hasil = round(($penjualanMax - $penjualanRataRata) * $leadTime);
 
                 return $hasil;
             }
         );
     }
 
-    protected function hasil(): Attribute
+    protected function rop(): Attribute
     {
         return Attribute::make(
             function () {
-                $kebutuhanSetahun = $this->kebutuhan_setahun;
-                $totalTransaksi = $this->total_transaksi;
-                $penjualanMax = $this->penjualan_maksimal;
+                $totalPenjualan = $this->kebutuhan_setahun;
                 $leadTime = $this->barang->supplier->lead_time;
+                $banyakPenjualan = $this->total_transaksi;
+                $penjualanMax = $this->penjualan_maksimal;
 
-                // $dayInYear = (int) date('z', mktime(0, 0, 0, 12, 31, $this->tahun_transaksi)) + 1;
-                // $hasil = $this->ss + ($this->barang->supplier->lead_time * (int) $this->kebutuhan_setahun / $dayInYear);
+                $rataRataPerhari = ($totalPenjualan / 12 / 30);
 
-                $hasil = round((($kebutuhanSetahun / $totalTransaksi / 30) * $leadTime) + $this->ss);
+                $hasil = round(($rataRataPerhari * $leadTime) + $this->ss);
 
                 return $hasil;
             }

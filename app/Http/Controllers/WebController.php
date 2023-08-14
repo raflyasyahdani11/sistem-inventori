@@ -4,17 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Ss;
 use App\Models\Eoq;
-use App\Models\Rop;
 use App\Models\User;
 use App\Models\Supplier;
+use App\Models\Perhitungan;
 use Illuminate\Http\Request;
 use App\Models\TransaksiMasuk;
 use App\Models\TransaksiKeluar;
+use App\Notifications\ExpiredItem;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\TransaksiMasukExport;
 use App\Exports\TransaksiKeluarExport;
 use App\Http\Requests\DownloadReportTransactionInRequest;
 use App\Http\Requests\DownloadReportTransactionOutRequest;
+use App\Models\Barang;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class WebController extends Controller
 {
@@ -28,8 +32,32 @@ class WebController extends Controller
             'trx_out' => TransaksiKeluar::count(),
         ];
 
+        $barangTerlaris = DB::table('transaksi_keluar')
+            ->selectRaw('SUM(jumlah) as jumlah, barang.nama')
+            ->groupBy('barang_id', 'barang.nama')
+            ->whereBetween('tanggal_keluar', [
+                Carbon::now()->firstOfMonth()->toDateTimeString(),
+                Carbon::now()->hours(23)->minutes(59)->seconds(59)->toDateTimeString(),
+            ])
+            ->orderByDesc('jumlah')
+            ->join('barang', 'barang.id', '=', 'transaksi_keluar.barang_id')
+            ->limit(10)
+            ->get();
+
+        $barangTerbanyak = Barang::with(['transaksi_masuk'])
+            ->get()
+            ->sortByDesc('jumlah')
+            ->take(5)
+            ->map(function ($barang) {
+                return (object)[
+                    'jumlah' => $barang->jumlah,
+                    'nama' => $barang->nama,
+                ];
+            })
+            ->values();
+
         return view('pages.dashboard')
-            ->with(compact('title', 'count'));
+            ->with(compact('title', 'count', 'barangTerlaris', 'barangTerbanyak'));
     }
 
     public function showReportIndex()
@@ -42,7 +70,7 @@ class WebController extends Controller
 
     public function showReportKeluar()
     {
-        $title = 'Laporan Transaksi Keluar';
+        $title = 'Laporan Transaksi Penjualan';
 
         return view('pages.report.keluar.index')
             ->with(compact('title'));
@@ -50,7 +78,7 @@ class WebController extends Controller
 
     public function showReportMasuk()
     {
-        $title = 'Laporan Transaksi Masuk';
+        $title = 'Laporan Transaksi Pembelian';
 
         return view('pages.report.masuk.index')
             ->with(compact('title'));
@@ -64,56 +92,56 @@ class WebController extends Controller
             ->with(compact('title'));
     }
 
-    public function showPerhitunganEoq(Request $request)
-    {
-        $title = 'Perhitungan EOQ';
+    // public function showPerhitunganEoq(Request $request)
+    // {
+    //     $title = 'Perhitungan EOQ';
 
-        $yearNow = (int) date('Y');
-        $yearsAgo = $yearNow - 1;
-        $year = $request->get('year', $yearsAgo);
+    //     $yearNow = (int) date('Y');
+    //     $yearsAgo = $yearNow - 1;
+    //     $year = $request->get('year', $yearsAgo);
 
-        $years = Eoq::select('tahun_transaksi')
-            ->distinct()
-            ->orderBy('tahun_transaksi', 'desc')
-            ->pluck('tahun_transaksi')
-            ->reject(function (int $value, int $key) use ($yearNow) {
-                return $value == $yearNow;
-            })
-            ->toArray();
+    //     $years = Eoq::select('tahun_transaksi')
+    //         ->distinct()
+    //         ->orderBy('tahun_transaksi', 'desc')
+    //         ->pluck('tahun_transaksi')
+    //         ->reject(function (int $value, int $key) use ($yearNow) {
+    //             return $value == $yearNow;
+    //         })
+    //         ->toArray();
 
-        $data = Eoq::with(['barang', 'supplier'])
-            ->where('tahun_transaksi', $year)
-            ->orderBy('barang_id')
-            ->get();
+    //     $data = Eoq::with(['barang', 'supplier'])
+    //         ->where('tahun_transaksi', $year)
+    //         ->orderBy('barang_id')
+    //         ->get();
 
-        return view('pages.perhitungan.eoq.list')
-            ->with(compact('title', 'data', 'years', 'year'));
-    }
+    //     return view('pages.perhitungan.eoq.list')
+    //         ->with(compact('title', 'data', 'years', 'year'));
+    // }
 
-    public function showPerhitunganSs(Request $request)
-    {
-        $title = 'Perhitungan SS';
+    // public function showPerhitunganSs(Request $request)
+    // {
+    //     $title = 'Perhitungan SS';
 
-        $yearNow = (int) date('Y');
-        $yearsAgo = $yearNow - 1;
-        $year = $request->get('year', $yearsAgo);
+    //     $yearNow = (int) date('Y');
+    //     $yearsAgo = $yearNow - 1;
+    //     $year = $request->get('year', $yearsAgo);
 
-        $years = Ss::select('tahun_transaksi')
-            ->distinct()
-            ->orderBy('tahun_transaksi', 'desc')
-            ->pluck('tahun_transaksi')
-            ->reject(function (int $value, int $key) use ($yearNow) {
-                return $value == $yearNow;
-            })
-            ->toArray();
+    //     $years = Ss::select('tahun_transaksi')
+    //         ->distinct()
+    //         ->orderBy('tahun_transaksi', 'desc')
+    //         ->pluck('tahun_transaksi')
+    //         ->reject(function (int $value, int $key) use ($yearNow) {
+    //             return $value == $yearNow;
+    //         })
+    //         ->toArray();
 
-        $data = Ss::where('tahun_transaksi', $year)
-            ->orderBy('barang_id')
-            ->get();
+    //     $data = Ss::where('tahun_transaksi', $year)
+    //         ->orderBy('barang_id')
+    //         ->get();
 
-        return view('pages.perhitungan.ss.list')
-            ->with(compact('title', 'data', 'years', 'year'));
-    }
+    //     return view('pages.perhitungan.ss.list')
+    //         ->with(compact('title', 'data', 'years', 'year'));
+    // }
 
     public function showPerhitunganRop(Request $request)
     {
@@ -123,11 +151,11 @@ class WebController extends Controller
         $yearsAgo = $yearNow - 1;
         $year = $request->get('year', $yearsAgo);
 
-        $data = Rop::where('tahun_transaksi', $year)
+        $data = Perhitungan::where('tahun_transaksi', $year)
             ->orderBy('barang_id')
             ->get();
 
-        $years = Rop::select('tahun_transaksi')
+        $years = Perhitungan::select('tahun_transaksi')
             ->distinct()
             ->orderBy('tahun_transaksi', 'desc')
             ->pluck('tahun_transaksi')
@@ -135,7 +163,6 @@ class WebController extends Controller
                 return $value == $yearNow;
             })
             ->toArray();
-
 
         return view('pages.perhitungan.rop.list')
             ->with(compact('title', 'data', 'years', 'year'));
@@ -149,11 +176,11 @@ class WebController extends Controller
         $yearsAgo = $yearNow - 1;
         $year = $request->get('year', $yearsAgo);
 
-        $data = Rop::where('tahun_transaksi', $year)
+        $data = Perhitungan::where('tahun_transaksi', $year)
             ->orderBy('barang_id')
             ->get();
 
-        $years = Rop::select('tahun_transaksi')
+        $years = Perhitungan::select('tahun_transaksi')
             ->distinct()
             ->orderBy('tahun_transaksi', 'desc')
             ->pluck('tahun_transaksi')
@@ -171,6 +198,9 @@ class WebController extends Controller
         $notification = auth()->user()->notifications()->find($notification);
 
         if ($notification) $notification->markAsRead();
+
+        if ($notification->type == ExpiredItem::class)
+            return redirect()->route('in.index');
 
         return redirect()->back();
     }

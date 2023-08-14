@@ -16,8 +16,9 @@ class TransaksiMasukController extends Controller
      */
     public function index()
     {
-        $title = 'List Transaksi Masuk';
+        $title = 'List Transaksi Pembelian';
         $data = TransaksiMasuk::with(['barang', 'barang.supplier', 'barang.satuan_barang'])
+            ->orderBy('tanggal_expired')
             ->get();
 
         return view('pages.transaction.in.list')
@@ -29,7 +30,7 @@ class TransaksiMasukController extends Controller
      */
     public function create()
     {
-        $title = 'Add Transaksi Masuk';
+        $title = 'Add Transaksi Pembelian';
         $barang = Barang::all();
         $supplier = Supplier::all();
 
@@ -50,18 +51,14 @@ class TransaksiMasukController extends Controller
             $barangId = $request->post('barang');
             $jumlah = (int) $request->post('jumlah');
 
-            $barang = Barang::find($barangId);
-            $barang->jumlah = $barang->jumlah + $jumlah;
-
             TransaksiMasuk::create([
-                'jumlah' => $request->post('jumlah'),
+                'jumlah' => $jumlah,
+                'jumlah_sekarang' => $jumlah,
                 'barang_id' => $request->post('barang'),
                 'supplier_id' => $request->post('supplier'),
                 'tanggal_masuk' => $request->post('tanggal_masuk'),
                 'tanggal_expired' => $request->post('tanggal_expired'),
             ]);
-
-            $barang->save();
 
             DB::commit();
 

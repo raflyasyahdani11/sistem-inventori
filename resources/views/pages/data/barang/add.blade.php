@@ -45,7 +45,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="input-harga">Harga Barang</label>
+                            <label for="input-harga">Harga Beli</label>
                             <input type="number" class="form-control" id="input-harga" name="harga"
                                 aria-describedby="input-harga-help" value="{{ old('harga') }}">
                             @error('harga')
@@ -54,7 +54,7 @@
                                 </small>
                             @enderror
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="input-password">Jumlah Barang</label>
                             <input type="number" class="form-control" id="input-password" name="jumlah"
                                 aria-describedby="input-password-help" value="{{ old('jumlah') }}">
@@ -63,11 +63,11 @@
                                     {{ $message }}
                                 </small>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="input-password">Satuan</label>
                             <div class="form-group">
-                                <select class="form-control" id="exampleFormControlSelect1" name="satuan">
+                                <select class="form-control" id="satuan" name="satuan">
                                     @foreach ($satuanBarang as $item)
                                         <option value="{{ $item->id }}" @selected($item->id == old('satuan'))>
                                             {{ $item->nama }}
@@ -84,7 +84,7 @@
                         <div class="form-group">
                             <label for="input-password">Supplier</label>
                             <div class="form-group">
-                                <select class="form-control" id="exampleFormControlSelect1" name="supplier">
+                                <select class="form-control" id="supplier" name="supplier">
                                     @foreach ($supplier as $item)
                                         <option value="{{ $item->id }}" @selected($item->id == old('supplier'))>
                                             {{ $item->nama }}

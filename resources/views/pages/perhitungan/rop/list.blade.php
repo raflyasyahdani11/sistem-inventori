@@ -58,7 +58,7 @@
                                                 {{ number_format($item->kebutuhan_setahun, 0, ',', '.') }}</td>
                                             <td class="text-right text-monospace">
                                                 {{ date('z', mktime(0, 0, 0, 12, 31, $item->tahun_transaksi)) + 1 }}</td>
-                                            <td class="text-right text-monospace">{{ round($item->hasil) }}</td>
+                                            <td class="text-right text-monospace">{{ round($item->rop) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

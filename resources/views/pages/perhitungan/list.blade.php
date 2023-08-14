@@ -50,9 +50,9 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->barang->nama }}</td>
                                             <td class="text-right text-monospace">
-                                                @if ($item->barang->jumlah > round($item->hasil))
+                                                @if ($item->barang->jumlah > round($item->rop))
                                                     <p class="mb-0 text-success">{{ $item->barang->jumlah }}</p>
-                                                @elseif ($item->barang->jumlah == round($item->hasil))
+                                                @elseif ($item->barang->jumlah == round($item->rop))
                                                     <p class="mb-0 text-warning">{{ $item->barang->jumlah }}</p>
                                                 @else
                                                     <p class="mb-0 text-danger">{{ $item->barang->jumlah }}</p>
@@ -68,12 +68,12 @@
                                                 {{ round($item->ss) }}
                                             </td>
                                             <td class="text-right text-monospace">
-                                                {{ round($item->hasil) }}
+                                                {{ round($item->rop) }}
                                             </td>
                                             <td class="text-center">
-                                                @if ($item->barang->jumlah > round($item->hasil))
+                                                @if ($item->barang->jumlah > round($item->rop))
                                                     <span class="badge badge-success">Safe</span>
-                                                @elseif ($item->barang->jumlah == round($item->hasil))
+                                                @elseif ($item->barang->jumlah == round($item->rop))
                                                     <span class="badge badge-warning">Running Out</span>
                                                 @else
                                                     <span class="badge badge-danger">Under Stock</span>

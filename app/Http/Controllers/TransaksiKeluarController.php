@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rop;
-use App\Models\User;
 use App\Models\Barang;
 use App\Models\Supplier;
+use App\Models\TransaksiMasuk;
 use App\Models\TransaksiKeluar;
-use App\Notifications\RestockItem;
 use Illuminate\Support\Facades\DB;
 use App\Events\TransactionOutSuccessful;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StoreTransaksiKeluarRequest;
 use App\Http\Requests\UpdateTransaksiKeluarRequest;
@@ -22,7 +19,7 @@ class TransaksiKeluarController extends Controller
      */
     public function index()
     {
-        $title = 'List Transaksi Keluar';
+        $title = 'List Transaksi Penjualan';
         $data = TransaksiKeluar::with(['barang', 'barang.supplier'])
             ->orderBy('tanggal_expired', 'asc')
             ->get();
@@ -36,7 +33,7 @@ class TransaksiKeluarController extends Controller
      */
     public function create()
     {
-        $title = 'Add Transaksi Keluar';
+        $title = 'Add Transaksi Penjualan';
         $barang = Barang::all();
         $supplier = Supplier::all();
 
@@ -56,14 +53,13 @@ class TransaksiKeluarController extends Controller
 
             $barangId = $request->post('barang');
             $jumlah = (int) $request->post('jumlah');
+            $trxMasukId = (int) $request->post('trx_masuk_id');
 
             $barang = Barang::find($barangId);
 
             if ($jumlah > $barang->jumlah) {
                 throw new \Exception("Stock barang kurang dari $jumlah");
             }
-
-            $barang->jumlah = $barang->jumlah - $jumlah;
 
             $transaksiKeluar = TransaksiKeluar::create([
                 'jumlah' => $request->post('jumlah'),
@@ -73,7 +69,9 @@ class TransaksiKeluarController extends Controller
                 'tanggal_expired' => $request->post('tanggal_expired'),
             ]);
 
-            $barang->save();
+            $trxMasuk = TransaksiMasuk::find($trxMasukId);
+            $trxMasuk->jumlah_sekarang = $trxMasuk->jumlah_sekarang - $jumlah;
+            $trxMasuk->save();
 
             TransactionOutSuccessful::dispatch($transaksiKeluar);
 

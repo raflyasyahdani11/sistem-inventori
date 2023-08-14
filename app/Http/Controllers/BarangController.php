@@ -17,7 +17,7 @@ class BarangController extends Controller
     public function index()
     {
         $title = 'List Data Barang';
-        $data = Barang::with(['jenis_barang', 'satuan_barang', 'supplier'])->get();
+        $data = Barang::with(['jenis_barang', 'satuan_barang', 'supplier', 'transaksi_masuk'])->get();
 
         return view('pages.data.barang.list')
             ->with(compact('title', 'data'));
@@ -49,9 +49,10 @@ class BarangController extends Controller
             'kode' => $validatedRequest['kode'],
             'nama' => $validatedRequest['nama'],
             'harga' => $validatedRequest['harga'],
-            'jumlah' => $validatedRequest['jumlah'],
+            // 'jumlah' => $validatedRequest['jumlah'],
             'id_jenis_barang' => $validatedRequest['jenis'],
             'id_satuan_barang' => $validatedRequest['satuan'],
+            'id_supplier' => $validatedRequest['supplier']
         ]);
 
         if ($barang instanceof Barang) {
@@ -101,14 +102,13 @@ class BarangController extends Controller
     {
         $title = 'Edit Data Barang';
 
+        $supplier = Supplier::all();
         $jenisBarang = JenisBarang::all();
         $satuanBarang = SatuanBarang::all();
 
         return view('pages.data.barang.edit')
             ->with(compact('title'))
-            ->with(compact('barang'))
-            ->with(compact('jenisBarang'))
-            ->with(compact('satuanBarang'));
+            ->with(compact('barang', 'jenisBarang', 'satuanBarang', 'supplier'));
     }
 
     /**
@@ -118,9 +118,11 @@ class BarangController extends Controller
     {
         $updatedRow = $barang->update([
             'nama' => $request->post('nama'),
-            'jumlah' => $request->post('jumlah'),
+            // 'jumlah' => $request->post('jumlah'),
+            'harga' => $request->post('harga'),
             'id_jenis_barang' => $request->post('jenis'),
             'id_satuan_barang' => $request->post('satuan'),
+            'id_supplier' => $request->post('supplier'),
         ]);
 
         if ($updatedRow > 0) {

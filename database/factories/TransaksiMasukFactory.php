@@ -17,16 +17,19 @@ class TransaksiMasukFactory extends Factory
     */
    public function definition(): array
    {
-      $tanggalMasuk = fake()->dateTimeBetween('2020-01-01', '2022-12-31');
+      $tanggalMasuk = fake()->dateTimeBetween('2020-01-01', '2023-12-31');
 
       $tanggalExpired = clone $tanggalMasuk;
       $tanggalExpired->add(new DateInterval('P3M'));
+
+      $jumlah = fake()->numberBetween(10, 31);
 
       return [
          'tanggal_masuk' => $tanggalMasuk,
          'tanggal_expired' => $tanggalExpired,
          'barang_id' => fake()->numberBetween(1, 10),
-         'jumlah' => fake()->randomNumber(2),
+         'jumlah' => $jumlah,
+         'jumlah_sekarang' => $jumlah,
       ];
    }
 }

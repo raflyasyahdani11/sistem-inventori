@@ -4,14 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Barang extends Model
 {
     use HasFactory, SoftDeletes;
+
     /**
      * The table associated with the model.
      *
@@ -25,8 +26,21 @@ class Barang extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama', 'kode', 'jumlah', 'id_jenis_barang', 'id_satuan_barang'
+        'nama', 'kode', 'harga', 'id_jenis_barang', 'id_satuan_barang', 'id_supplier'
     ];
+
+
+    protected function jumlah(): Attribute
+    {
+        return Attribute::make(
+            function () {
+                $trxMasuk = $this->transaksi_masuk;
+                $hasil = $this->transaksi_masuk->sum('jumlah_sekarang');
+
+                return $hasil;
+            }
+        );
+    }
 
     public function jenis_barang(): BelongsTo
     {
@@ -43,9 +57,9 @@ class Barang extends Model
         return $this->belongsTo(Supplier::class, 'id_supplier', 'id');
     }
 
-    public function rop(): HasMany
+    public function perhitungan(): HasMany
     {
-        return $this->hasMany(Rop::class, 'barang_id', 'id');
+        return $this->hasMany(Perhitungan::class, 'barang_id', 'id');
     }
 
     public function transaksi_masuk(): HasMany

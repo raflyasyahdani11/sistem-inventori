@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @push('js')
     @vite('resources/js/pages/transaction/keluar/add.js')
 @endpush
@@ -12,6 +11,7 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('out.store') }}">
                         @csrf
+                        <input type="hidden" name="trx_masuk_id" id="trx_masuk_id" value="">
                         <div class="form-group">
                             <label for="input-password">Barang</label>
                             <div class="form-group">
@@ -24,9 +24,9 @@
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
-                            <label for="input-name">Tanggal Keluar</label>
+                            <label for="input-name">Tanggal Penjualan</label>
                             <input type="date" class="form-control" id="tanggal_keluar" name="tanggal_keluar"
-                                aria-describedby="tanggal_keluar-help" readonly>
+                                aria-describedby="tanggal_keluar-help">
                             @error('tanggal_keluar')
                                 <small id="input-nama-help" class="form-text text-danger">{{ $message }}</small>
                             @enderror
@@ -44,7 +44,8 @@
                             <input type="number" class="form-control" id="input-password" name="jumlah"
                                 aria-describedby="input-password-help">
                             <small id="input-nama-help" class="form-text text-muted">
-                                Stok : <span id="stok">0</span> | Batas Aman Stok : <span id="rop">0</span>
+                                Stok : <span id="stok">0</span> 
+                                {{-- | Batas Aman Stok : <span id="rop">0</span> --}}
                                 @error('jumlah')
                                     | <span class="text-danger">{{ $message }}</span>
                                 @enderror

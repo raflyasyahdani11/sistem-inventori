@@ -10,7 +10,7 @@
 
 @section('button-side')
     <a href="{{ route('out.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Keluar
+        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Penjualan
     </a>
 @endsection
 

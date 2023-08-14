@@ -8,7 +8,7 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h5 class="text-center">
-                                Laporan Barang <span class="text-success"><b>Masuk</b></span>
+                                Laporan Barang <span class="text-success"><b>Pembelian</b></span>
                             </h5>
                             <hr>
                             <form class="mt-4" action="{{ route('report.transaction_in.download') }}" method="POST">

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('js')
+    @vite('resources/js/pages/transaction/masuk/add.js')
+@endpush
+
 @section('content')
     <div class="row">
         <div class="col-5">
@@ -19,15 +23,15 @@
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
-                            <label for="input-name">Tanggal Masuk</label>
-                            <input type="date" class="form-control" id="input-phone" name="tanggal_masuk"
-                                aria-describedby="input-phone-help">
+                            <label for="tanggal_masuk">Tanggal Pembelian</label>
+                            <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk"
+                                aria-describedby="tanggal_masuk-help"> {{--readonly--}
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
-                            <label for="input-username">Tanggal Expired</label>
-                            <input type="date" class="form-control" id="input-phone" name="tanggal_expired"
-                                aria-describedby="input-phone-help">
+                            <label for="tanggal_expired">Tanggal Expired</label>
+                            <input type="date" class="form-control" id="tanggal_expired" name="tanggal_expired"
+                                aria-describedby="tanggal_expired-help">
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">

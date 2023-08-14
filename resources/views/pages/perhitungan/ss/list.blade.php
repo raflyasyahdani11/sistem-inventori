@@ -57,7 +57,7 @@
                                                 {{ $item->supplier->lead_time }}
                                             </td>
                                             <td class="text-right text-monospace">
-                                                {{ round($item->hasil) }}
+                                                {{ round($item->rop) }}
                                             </td>
                                         </tr>
                                     @endforeach

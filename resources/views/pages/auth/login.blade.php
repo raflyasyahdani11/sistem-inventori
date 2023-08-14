@@ -25,7 +25,7 @@
                     </button>
                 </div>
             @endif
-            <div class="card o-hidden border-0 shadow-lg">
+            <div class="card o-hidden border-0 shadow-lg bg-white">
                 <div class="card-body p-0">
                     <div class="p-5">
                         <div class="text-center">

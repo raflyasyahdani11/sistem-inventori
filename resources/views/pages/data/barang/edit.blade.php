@@ -29,18 +29,45 @@
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
+                            <label for="input-harga">Harga Beli</label>
+                            <input type="number" class="form-control" id="input-harga" name="harga"
+                                aria-describedby="input-harga-help" value="{{ old('harga', $item->harga) }}">
+                            @error('harga')
+                                <small id="input-nama-help" class="form-text text-danger">
+                                    {{ $message }}
+                                </small>
+                            @enderror
+                        </div>
+                        {{-- <div class="form-group">
                             <label for="input-password">Jumlah Barang</label>
                             <input type="number" class="form-control" id="input-password" name="jumlah"
                                 aria-describedby="input-password-help" value="{{ old('jumlah', $barang->jumlah) }}">
-                            {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
+                            <small id="input-nama-help" class="form-text text-muted">We'll never share your email with
+                                anyone else.</small>
+                        </div> --}}
+                        <div class="form-group">
+                            <label for="input-password">Supplier</label>
+                            <div class="form-group">
+                                <select class="form-control" id="supplier" name="supplier">
+                                    @foreach ($supplier as $item)
+                                        <option value="{{ $item->id }}" @selected($item->id == old('supplier', $barang->id_supplier))>
+                                            {{ $item->nama }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @error('supplier')
+                                <small id="input-nama-help" class="form-text text-danger">
+                                    {{ $message }}
+                                </small>
+                            @enderror
                         </div>
                         <div class="form-group">
                             <label for="input-password">Satuan</label>
                             <div class="form-group">
                                 <select class="form-control" id="exampleFormControlSelect1" name="satuan">
                                     @foreach ($satuanBarang as $item)
-                                        <option value="{{ $item->id }}"
-                                            {{ $item->id == $barang->satuan_barang->id ? 'selected' : '' }}>
+                                        <option value="{{ $item->id }}" @selected($item->id == old('satuan', $barang->id_satuan_barang))>
                                             {{ $item->nama }}
                                         </option>
                                     @endforeach

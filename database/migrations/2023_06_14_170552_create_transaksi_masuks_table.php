@@ -17,6 +17,7 @@ return new class extends Migration
             $table->dateTime('tanggal_expired');
             $table->unsignedBigInteger('barang_id');
             $table->integer('jumlah');
+            $table->integer('jumlah_sekarang');
             $table->timestamps();
 
             $table->foreign('barang_id')->references('id')->on('barang');

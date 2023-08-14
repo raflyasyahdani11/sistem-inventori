@@ -23,7 +23,7 @@ class TransaksiMasuk extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'tanggal_masuk', 'barang_id', 'tanggal_expired', 'jumlah',
+        'tanggal_masuk', 'barang_id', 'tanggal_expired', 'jumlah', 'jumlah_sekarang'
     ];
 
     public function barang(): BelongsTo

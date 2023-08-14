@@ -18,5 +18,8 @@
         "sass": "^1.63.6",
         "sweetalert2": "^11.7.3",
         "vite": "^4.0.0"
+    },
+    "dependencies": {
+        "chart.js": "^2.9.4"
     }
 }

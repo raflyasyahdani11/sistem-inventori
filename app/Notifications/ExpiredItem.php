@@ -6,11 +6,11 @@ use App\Models\Barang;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class RestockItem extends Notification
+class ExpiredItem extends Notification
 {
     use Queueable;
 
-    private Barang $barang;
+    public Barang $barang;
 
     /**
      * Create a new notification instance.
@@ -37,11 +37,12 @@ class RestockItem extends Notification
      */
     public function toArray(object $notifiable): array
     {
-        $amount = $this->barang->jumlah;
         $namaBarang = $this->barang->nama;
+        $idBarang = $this->barang->id;
 
         return [
-            'message' => "Stok <b>$namaBarang</b> tersisa <b>$amount</b>, Ayo restock barang anda!",
+            'id_barang' => $idBarang,
+            'message' => "<b>$namaBarang</b> Sudah kadaluarsa !",
         ];
     }
 }

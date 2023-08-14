@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@push('css')
+{{-- @push('css')
     @vite('resources/js/pages/datatable-custom.css')
-@endpush
+@endpush --}}
 
 @push('js')
     @vite('resources/js/pages/user/list.js')
@@ -40,11 +40,25 @@
                                             @endcan
                                             <td>{{ $item->username }}</td>
                                             <td class="text-center">
-                                                <a href="{{ route('user.edit', $item) }}" class="btn btn-warning btn-sm">
-                                                    <span>
-                                                        <i class="fas fa-edit"></i>
-                                                    </span>
-                                                </a>
+                                                @if (App\Permission\Permission::KELOLA_DATA_PENGGUNA)
+                                                    @if (!$item->roles->contains('name', \App\Permission\Role::SUPER_ADMIN))
+                                                        <a href="{{ route('user.edit', $item) }}"
+                                                            class="btn btn-warning btn-sm">
+                                                            <span>
+                                                                <i class="fas fa-edit"></i>
+                                                            </span>
+                                                        </a>
+                                                    @else
+                                                        @if (auth()->user()->roles->contains('name', \App\Permission\Role::SUPER_ADMIN))
+                                                            <a href="{{ route('user.edit', $item) }}"
+                                                                class="btn btn-warning btn-sm">
+                                                                <span>
+                                                                    <i class="fas fa-edit"></i>
+                                                                </span>
+                                                            </a>
+                                                        @endif
+                                                    @endif
+                                                @endif
                                                 @can('delete', $item)
                                                     <form class="d-inline formDelete" method="post"
                                                         action="{{ route('user.destroy', $item) }}">
@@ -57,11 +71,6 @@
                                                         </button>
                                                     </form>
                                                 @endcan
-                                                <a class="btn btn-info btn-sm">
-                                                    <span>
-                                                        <i class="fas fa-search"></i>
-                                                    </span>
-                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -27,5 +27,6 @@ class Init extends Command
     {
         $this->call('migrate:refresh');
         $this->call('db:seed');
+        $this->call('app:check-expired-items');
     }
 }

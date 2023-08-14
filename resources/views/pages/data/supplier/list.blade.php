@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@push('css')
+{{-- @push('css')
     @vite('resources/js/pages/datatable-custom.css')
-@endpush
+@endpush --}}
 
 @push('js')
     @vite('resources/js/pages/data/supplier/list.js')
@@ -65,11 +65,11 @@
                                                         </span>
                                                     </button>
                                                 </form>
-                                                <a class="btn btn-info btn-sm" href="{{ route('supplier.show', $item) }}">
+                                                {{-- <a class="btn btn-info btn-sm" href="{{ route('supplier.show', $item) }}">
                                                     <span>
                                                         <i class="fas fa-search"></i>
                                                     </span>
-                                                </a>
+                                                </a> --}}
                                             </td>
                                         </tr>
                                     @endforeach

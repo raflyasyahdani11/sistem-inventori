@@ -10,7 +10,7 @@
 
 @section('button-side')
     <a href="{{ route('in.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Masuk
+        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Transaksi Pembelian
     </a>
 @endsection
 
@@ -40,10 +40,10 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center align-middle" width="3%">No</th>
-                                        <th class="text-center align-middle">Tanggal Masuk</th>
                                         <th class="text-center align-middle">Nama barang</th>
-                                        <th class="text-center align-middle">Tanggal Expired</th>
                                         <th class="text-center align-middle">Supplier</th>
+                                        <th class="text-center align-middle">Tanggal Masuk</th>
+                                        <th class="text-center align-middle">Tanggal Expired</th>
                                         <th class="text-center align-middle">Jumlah</th>
                                         <th class="text-center align-middle">Satuan</th>
                                         {{-- <th width="15%">Aksi</th> --}}
@@ -53,11 +53,13 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ date('j F Y', strtotime($item->tanggal_masuk)) }}</td>
                                             <td>{{ $item->barang->nama }}</td>
-                                            <td>{{ date('j F Y', strtotime($item->tanggal_expired)) }}</td>
                                             <td>{{ $item->barang->supplier->nama }}</td>
-                                            <td>{{ $item->jumlah }}</td>
+                                            <td>{{ date('j F Y', strtotime($item->tanggal_masuk)) }}</td>
+                                            <td>{{ date('j F Y', strtotime($item->tanggal_expired)) }}</td>
+                                            <td class="text-monospace text-right">
+                                                {{ number_format($item->jumlah, 0, ',', '.') }}
+                                            </td>
                                             <td>{{ $item->barang->satuan_barang->nama }}</td>
                                             {{-- <td class="text-center">
                                                 <a class="btn btn-warning btn-sm">

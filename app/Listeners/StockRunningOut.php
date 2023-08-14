@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use App\Notifications\RestockItem;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Notification;
 
 class StockRunningOut
@@ -17,8 +15,8 @@ class StockRunningOut
     public function handle(object $event): void
     {
         $barang = $event->transactionOut->barang;
-        $rop = $barang->rop->firstWhere('tahun_transaksi', Carbon::now()->subYears(1)->year);
-        $rop = round($rop->hasil);
+        $perhitungan = $barang->perhitungan->firstWhere('tahun_transaksi', Carbon::now()->subYears(1)->year);
+        $rop = round($perhitungan->rop);
 
         if ($barang->jumlah <= $rop) {
             Notification::send(User::all(), new RestockItem($barang));
