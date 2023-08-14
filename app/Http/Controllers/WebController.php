@@ -1,9 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Ss;
-use App\Models\Eoq;
 use App\Models\User;
 use App\Models\Supplier;
 use App\Models\Perhitungan;
