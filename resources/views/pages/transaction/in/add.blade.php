@@ -14,7 +14,7 @@
                         <div class="form-group">
                             <label for="input-password">Barang</label>
                             <div class="form-group">
-                                <select class="form-control" id="exampleFormControlSelect1" name="barang">
+                                <select class="form-control" id="barang" name="barang">
                                     @foreach ($barang as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama }}</option>
                                     @endforeach
@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label for="tanggal_masuk">Tanggal Pembelian</label>
                             <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk"
-                                aria-describedby="tanggal_masuk-help"> {{--readonly--}
+                                aria-describedby="tanggal_masuk-help"> {{-- readonly--}
                             {{-- <small id="input-nama-help" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
@@ -38,6 +38,9 @@
                             <label for="input-password">Jumlah Barang</label>
                             <input type="number" class="form-control" id="input-password" name="jumlah"
                                 aria-describedby="input-password-help">
+                            <small id="input-nama-help" class="form-text text-muted">
+                                EOQ : <span id="eoq">0</span>
+                            </small>
                         </div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>

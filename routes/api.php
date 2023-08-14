@@ -29,7 +29,7 @@ Route::get('/barang/{barang}', function (Barang $barang) {
 
     $trxMasuk = $trxMasukRaw->first();
 
-    $perhitungan = $barang->perhitungan->firstWhere('tahun_transaksi', Carbon::now()->subYear(1)->year);
+    $perhitungan = $barang->perhitungan->firstWhere('tahun_transaksi', Carbon::now()->subYears(1)->year);
 
     return response()->json([
         'message' => 'berhasil mengambil data barang',
@@ -38,6 +38,7 @@ Route::get('/barang/{barang}', function (Barang $barang) {
             'jumlah' => $trxMasuk->jumlah_sekarang,
             'min_exp_date' => $trxMasuk->tanggal_expired,
             'rop' => $perhitungan->rop,
+            'eoq' => $perhitungan->eoq,
         ]
     ]);
 });

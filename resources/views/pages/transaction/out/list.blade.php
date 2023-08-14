@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@push('css')
+{{-- @push('css')
     @vite('resources/js/pages/datatable-custom.css')
-@endpush
+@endpush --}}
 
 @push('js')
     @vite('resources/js/pages/transaction/keluar/list.js')

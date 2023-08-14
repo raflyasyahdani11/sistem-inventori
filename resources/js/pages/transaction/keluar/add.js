@@ -21,8 +21,6 @@ barangSelect.addEventListener("change", async () => {
             const expDate = new Date(min_exp_date).toISOString();
             const expDateStr = expDate.split("T")[0];
 
-            console.log(min_exp_date, expDate, expDateStr);
-
             const outDate = new Date().toISOString();
             const outDateStr = outDate.split("T")[0];
 
@@ -31,8 +29,6 @@ barangSelect.addEventListener("change", async () => {
             // ropLabel.innerHTML = Math.round(rop);
             tanggalExpiredDatePicker.value = expDateStr;
             tanggalKeluarDatePicker.value = outDateStr;
-
-            console.log(trxMasukId.value);
         } else {
             Swal.fire(payload.message, payload?.additional_info, "error");
         }
