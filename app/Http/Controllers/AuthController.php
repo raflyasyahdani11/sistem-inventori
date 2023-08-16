@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PostLoginRequest;
+use App\Permission\Role;
+use App\Providers\RouteServiceProvider;
 
 class AuthController extends Controller
 {
@@ -15,7 +17,11 @@ class AuthController extends Controller
         $isSuccess = Auth::attempt($input);
 
         if ($isSuccess) {
-            return redirect()->route('auth.login');
+            if ($user->hasRole(Role::KARYAWAN)) {
+                return redirect()->route(RouteServiceProvider::KARYAWAN_HOME);
+            }
+
+            return redirect()->route(RouteServiceProvider::HOME);
         }
 
         $message = 'User atau password salah';
