@@ -17,7 +17,7 @@ class AuthController extends Controller
         $isSuccess = Auth::attempt($input);
 
         if ($isSuccess) {
-            if ($user->hasRole(Role::KARYAWAN)) {
+            if (auth()->user()->hasRole(Role::KARYAWAN)) {
                 return redirect()->route(RouteServiceProvider::KARYAWAN_HOME);
             }
 
