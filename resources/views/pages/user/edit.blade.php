@@ -52,7 +52,7 @@
                             <label for="input-username">Role</label>
                             <div class="form-group">
                                 <select class="form-control" id="select-role" name="role">
-                                    <option hidden>Pilih Role User</option>
+                                    <option value="" hidden>Pilih Role User</option>
                                     @foreach ($roles as $item)
                                         <option value="{{ $item->name }}" @selected(old('role', $user->roles->pluck('name')->except(App\Permission\Role::SUPER_ADMIN)[0]) == $item->name)>
                                             {{ $item->name }}
