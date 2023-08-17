@@ -3,6 +3,9 @@ const eoqLabel = document.getElementById('eoq');
 const tanggalMasukDatePicker = document.getElementById("tanggal_masuk");
 const tanggalExpDatePicker = document.getElementById("tanggal_expired");
 
+const allUrl = document.getElementById("url");
+const { barangGet } = allUrl.dataset;
+
 const inDate = new Date().toISOString();
 const inDateStr = inDate.split("T")[0];
 
@@ -15,9 +18,9 @@ tanggalExpDatePicker.value = expDateStr;
 barangSelect.addEventListener("change", async () => {
     try {
         const barangId = barangSelect.value;
-        const response = await fetch(
-            `http://localhost:8000/api/barang/${barangId}`
-        );
+
+        const url = barangGet.replace(':id', barangId);
+        const response = await fetch(url);
 
         const payload = await response.json();
 

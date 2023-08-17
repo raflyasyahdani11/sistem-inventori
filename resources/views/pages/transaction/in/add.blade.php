@@ -5,6 +5,7 @@
 @endpush
 
 @section('content')
+    <div class="d-none" data-barang-get="{{ route('barang.get', ':id') }}" id="url"></div>
     <div class="row">
         <div class="col-5">
             <div class="card shadow">
