@@ -41,4 +41,4 @@ Route::get('/barang/{barang}', function (Barang $barang) {
             'eoq' => $perhitungan->eoq,
         ]
     ]);
-});
+})->name('barang.get');

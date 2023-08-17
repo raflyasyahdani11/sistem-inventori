@@ -5,12 +5,15 @@ const trxMasukId = document.getElementById("trx_masuk_id");
 const tanggalExpiredDatePicker = document.getElementById("tanggal_expired");
 const tanggalKeluarDatePicker = document.getElementById("tanggal_keluar");
 
+const allUrl = document.getElementById("url");
+const { barangGet } = allUrl.dataset;
+
 barangSelect.addEventListener("change", async () => {
     try {
         const barangId = barangSelect.value;
-        const response = await fetch(
-            `http://localhost:8000/api/barang/${barangId}`
-        );
+
+        const url = barangGet.replace(':id', barangId);
+        const response = await fetch(url);
 
         const payload = await response.json();
 
