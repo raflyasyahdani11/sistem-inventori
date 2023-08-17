@@ -12,6 +12,10 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Supplier::factory()->count(10)->create();
+        \App\Models\Supplier::factory()->create([
+            'nama' => 'PT.Riau Abdi Sentosa',
+            'alamat' => 'Jl.Riau Ujung No.89, Pekanbaru',
+        ]);
+        \App\Models\Supplier::factory()->count(4)->create();
     }
 }

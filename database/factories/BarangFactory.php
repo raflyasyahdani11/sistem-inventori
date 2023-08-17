@@ -27,9 +27,9 @@ class BarangFactory extends Factory
             'kode' => 'B' . str_pad($number++, 5, '0', STR_PAD_LEFT),
             'nama' => $faker->foodName(),
             'harga' => fake()->randomNumber(4, true),
-            'id_jenis_barang' => fake()->numberBetween(1, 2),
+            'id_jenis_barang' => fake()->numberBetween(1, 8),
             'id_satuan_barang' => 1,
-            'id_supplier' => fake()->numberBetween(1, 10),
+            'id_supplier' => fake()->numberBetween(1, 5),
         ];
     }
 }

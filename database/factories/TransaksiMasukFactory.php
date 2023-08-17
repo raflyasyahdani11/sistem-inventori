@@ -22,12 +22,12 @@ class TransaksiMasukFactory extends Factory
       $tanggalExpired = clone $tanggalMasuk;
       $tanggalExpired->add(new DateInterval('P3M'));
 
-      $jumlah = fake()->numberBetween(10, 31);
+      $jumlah = fake()->numberBetween(15, 31);
 
       return [
          'tanggal_masuk' => $tanggalMasuk,
          'tanggal_expired' => $tanggalExpired,
-         'barang_id' => fake()->numberBetween(1, 10),
+         'barang_id' => fake()->numberBetween(1, 94),
          'jumlah' => $jumlah,
          'jumlah_sekarang' => $jumlah,
       ];

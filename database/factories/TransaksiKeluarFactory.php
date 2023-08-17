@@ -25,7 +25,7 @@ class TransaksiKeluarFactory extends Factory
         return [
             'tanggal_keluar' => $tanggalKeluar,
             'tanggal_expired' => $tanggalExpired,
-            'barang_id' => fake()->numberBetween(1, 10),
+            'barang_id' => fake()->numberBetween(1, 94),
             'jumlah' => fake()->randomNumber(2),
         ];
     }
