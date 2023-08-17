@@ -89,7 +89,15 @@ class UserController extends Controller
         ]);
 
         if ($updatedRow > 0) {
-            $user->syncRoles($request->post('role'));
+            $roles = [
+                $request->post('role'),
+            ];
+
+            if ($user->hasRole(PermissionRole::SUPER_ADMIN)) {
+                $roles[] = PermissionRole::SUPER_ADMIN;
+            }
+            
+            $user->syncRoles(...$roles);
             
             if ($request->post('password')) {
                 $user->update([
