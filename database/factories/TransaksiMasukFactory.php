@@ -17,7 +17,7 @@ class TransaksiMasukFactory extends Factory
     */
    public function definition(): array
    {
-      $tanggalMasuk = fake()->dateTimeBetween('2020-01-01', '2023-12-31');
+      $tanggalMasuk = fake()->dateTimeBetween('2022-01-01', '2023-12-31');
 
       $tanggalExpired = clone $tanggalMasuk;
       $tanggalExpired->add(new DateInterval('P3M'));

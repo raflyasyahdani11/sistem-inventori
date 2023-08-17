@@ -12,6 +12,6 @@ class TransaksiMasukSeeder extends Seeder
    */
   public function run(): void
   {
-    \App\Models\TransaksiMasuk::factory()->count(1200)->create();
+    \App\Models\TransaksiMasuk::factory()->count(750)->create();
   }
 }

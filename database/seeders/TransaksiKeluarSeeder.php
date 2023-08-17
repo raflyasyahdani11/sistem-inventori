@@ -12,6 +12,6 @@ class TransaksiKeluarSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\TransaksiKeluar::factory()->count(750)->create();
+        \App\Models\TransaksiKeluar::factory()->count(800)->create();
     }
 }

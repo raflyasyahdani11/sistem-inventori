@@ -17,7 +17,7 @@ class TransaksiKeluarFactory extends Factory
      */
     public function definition(): array
     {
-        $tanggalKeluar = fake()->dateTimeBetween('2020-01-01', '2022-12-31');
+        $tanggalKeluar = fake()->dateTimeBetween('2022-01-01', '2022-12-31');
 
         $tanggalExpired = clone $tanggalKeluar;
         $tanggalExpired->add(new DateInterval('P3M'));
