@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <label for="input-username">Tanggal Expired</label>
                             <input type="date" class="form-control" id="tanggal_expired" name="tanggal_expired"
-                                aria-describedby="input-phone-help" readonly>
+                                aria-describedby="input-phone-help">
                             @error('tanggal_expired')
                                 <small id="input-nama-help" class="form-text text-danger">{{ $message }}</small>
                             @enderror
