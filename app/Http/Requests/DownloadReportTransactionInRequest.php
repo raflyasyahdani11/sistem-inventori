@@ -22,8 +22,8 @@ class DownloadReportTransactionInRequest extends FormRequest
    public function rules(): array
    {
       return [
-         'tahun' => ['required'],
-         'bulan' => ['required'],
+         'dari_tanggal' => ['required'],
+         'sampai_tanggal' => ['required'],
       ];
    }
 }

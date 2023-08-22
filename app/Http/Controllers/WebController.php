@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use App\Models\Supplier;
 use App\Models\Perhitungan;
@@ -22,7 +23,7 @@ class WebController extends Controller
     public function showDashboard()
     {
         $title = 'Dashboard';
-        $count = (object)[
+        $count = (object) [
             'user' => User::count(),
             'supplier' => Supplier::count(),
             'trx_in' => TransaksiMasuk::count(),
@@ -46,7 +47,7 @@ class WebController extends Controller
             ->sortByDesc('jumlah')
             ->take(5)
             ->map(function ($barang) {
-                return (object)[
+                return (object) [
                     'jumlah' => $barang->jumlah,
                     'nama' => $barang->nama,
                 ];
@@ -194,7 +195,8 @@ class WebController extends Controller
     {
         $notification = auth()->user()->notifications()->find($notification);
 
-        if ($notification) $notification->markAsRead();
+        if ($notification)
+            $notification->markAsRead();
 
         if ($notification->type == ExpiredItem::class)
             return redirect()->route('in.index');
@@ -202,57 +204,17 @@ class WebController extends Controller
         return redirect()->back();
     }
 
-    public function downloadReportTransactionOut(DownloadReportTransactionOutRequest $request)
-    {
-        $validatedRequest = $request->validated();
-
-        $tahun = $validatedRequest['tahun'];
-        $bulan = $validatedRequest['bulan'];
-        $bulanString = str_pad($bulan, 2, '0', STR_PAD_LEFT); // dari 1, 2, 3 -> jadi 01, 02, 03
-
-        $date = \Carbon\Carbon::parse("$tahun-$bulanString-01");
-
-        $from = $date->toDateString();
-        $to = $date->endOfMonth()->toDateString();
-
-        $transaksiKeluar = TransaksiKeluar::with(['barang', 'barang.supplier'])
-            ->whereBetween('tanggal_keluar', [$from, $to])
-            ->get()
-            ->map(function ($value) {
-                return [
-                    'kode_barang' => $value->barang->kode,
-                    'nama_barang' => $value->barang->nama,
-                    'nama_supplier' => $value->barang->supplier->nama,
-                    'jumlah_barang' => $value->jumlah,
-                    'tanggal_keluar' => $value->tanggal_keluar,
-                    'tanggal_expired' => $value->tanggal_expired,
-                ];
-            })
-            ->toArray();
-
-        $fileExport = new TransaksiKeluarExport($transaksiKeluar);
-        $fileName = "transaksi_keluar.xlsx";
-        $response = Excel::download($fileExport, $fileName);
-        ob_end_clean();
-
-        return $response;
-    }
-
     public function downloadReportTransactionIn(DownloadReportTransactionInRequest $request)
     {
-        $validatedRequest = $request->validated();
-
-        $tahun = $validatedRequest['tahun'];
-        $bulan = $validatedRequest['bulan'];
-        $bulanString = str_pad($bulan, 2, '0', STR_PAD_LEFT); // dari 1, 2, 3 -> jadi 01, 02, 03
-
-        $date = \Carbon\Carbon::parse("$tahun-$bulanString-01");
-
-        $from = $date->toDateString();
-        $to = $date->endOfMonth()->toDateString();
+        $from = $request->post('dari_tanggal');
+        $to = $request->post('sampai_tanggal');
 
         $transaksiMasuk = TransaksiMasuk::with(['barang', 'barang.supplier'])
-            ->whereBetween('tanggal_masuk', [$from, $to])
+            ->whereBetween('tanggal_masuk', [
+                Carbon::parse($from),
+                Carbon::parse($to),
+            ])
+            ->orderBy('tanggal_masuk')
             ->get()
             ->map(function ($value) {
                 return [
@@ -268,6 +230,38 @@ class WebController extends Controller
 
         $fileExport = new TransaksiMasukExport($transaksiMasuk);
         $fileName = "transaksi_masuk.xlsx";
+        $response = Excel::download($fileExport, $fileName);
+        ob_end_clean();
+
+        return $response;
+    }
+
+    public function downloadReportTransactionOut(DownloadReportTransactionOutRequest $request)
+    {
+        $from = $request->post('dari_tanggal');
+        $to = $request->post('sampai_tanggal');
+
+        $transaksiKeluar = TransaksiKeluar::with(['barang', 'barang.supplier'])
+            ->whereBetween('tanggal_keluar', [
+                Carbon::parse($from),
+                Carbon::parse($to),
+            ])
+            ->orderBy('tanggal_keluar')
+            ->get()
+            ->map(function ($value) {
+                return [
+                    'kode_barang' => $value->barang->kode,
+                    'nama_barang' => $value->barang->nama,
+                    'nama_supplier' => $value->barang->supplier->nama,
+                    'jumlah_barang' => $value->jumlah,
+                    'tanggal_keluar' => $value->tanggal_keluar,
+                    'tanggal_expired' => $value->tanggal_expired,
+                ];
+            })
+            ->toArray();
+
+        $fileExport = new TransaksiKeluarExport($transaksiKeluar);
+        $fileName = "transaksi_keluar.xlsx";
         $response = Excel::download($fileExport, $fileName);
         ob_end_clean();
 

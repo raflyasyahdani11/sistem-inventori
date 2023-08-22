@@ -15,36 +15,18 @@
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-6">
-                                        @php
-                                            $currentMonth = date('m');
-                                        @endphp
-                                        <select class="form-control" id="bulan-masuk" name="bulan">
-                                            <option hidden>Pilih Bulan</option>
-                                            <option value="1" @selected($currentMonth == '1')>Januari</option>
-                                            <option value="2" @selected($currentMonth == '2')>Februari</option>
-                                            <option value="3" @selected($currentMonth == '3')>Maret</option>
-                                            <option value="4" @selected($currentMonth == '4')>April</option>
-                                            <option value="5" @selected($currentMonth == '5')>Mei</option>
-                                            <option value="6" @selected($currentMonth == '6')>Juni</option>
-                                            <option value="7" @selected($currentMonth == '7')>Juli</option>
-                                            <option value="8" @selected($currentMonth == '8')>Agustus</option>
-                                            <option value="9" @selected($currentMonth == '9')>September</option>
-                                            <option value="10" @selected($currentMonth == '10')>Oktober</option>
-                                            <option value="11" @selected($currentMonth == '11')>November</option>
-                                            <option value="12" @selected($currentMonth == '12')>Desember</option>
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="dari_tanggal">Dari Tanggal :</label>
+                                            <input type="date" class="form-control" id="dari_tanggal" name="dari_tanggal"
+                                                aria-describedby="dari_tanggal" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                        </div>
                                     </div>
                                     <div class="col-6">
-                                        <select class="form-control" id="tahun-masuk" name="tahun">
-                                            <option hidden>Pilih Tahun</option>
-                                            @php
-                                                $i = (int) date('Y');
-                                                $toYear = 2020;
-                                            @endphp
-                                            @for ($i; $i >= $toYear; $i--)
-                                                <option @selected(date('Y') == $i)>{{ $i }}</option>
-                                            @endfor
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="sampai_tanggal">Sampai Tanggal :</label>
+                                            <input type="date" class="form-control" id="sampai_tanggal"
+                                                name="sampai_tanggal" aria-describedby="sampai_tanggal" value="{{ \Carbon\Carbon::now()->addMonths(1)->format('Y-m-d') }}">
+                                        </div>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">
