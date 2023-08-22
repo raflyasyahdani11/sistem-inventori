@@ -21,17 +21,14 @@ barangSelect.addEventListener("change", async () => {
             const { data } = payload;
             const { trx_masuk_id, jumlah, min_exp_date, rop } = data;
 
-            const expDate = new Date(min_exp_date).toISOString();
-            const expDateStr = expDate.split("T")[0];
-
-            const outDate = new Date().toISOString();
-            const outDateStr = outDate.split("T")[0];
+            const expiredDate = dateToString(min_exp_date);
+            const trxDate = dateToString(new Date());
 
             stokLabel.innerHTML = jumlah;
             trxMasukId.value = trx_masuk_id;
-            // ropLabel.innerHTML = Math.round(rop);
-            tanggalExpiredDatePicker.value = expDateStr;
-            tanggalKeluarDatePicker.value = outDateStr;
+
+            tanggalExpiredDatePicker.value = expiredDate;
+            tanggalKeluarDatePicker.value = trxDate;
         } else {
             Swal.fire(payload.message, payload?.additional_info, "error");
         }
@@ -39,6 +36,16 @@ barangSelect.addEventListener("change", async () => {
         Swal.fire("Server Error", err.message, "error");
     }
 });
+
+const dateToString = (stringDate) => {
+    const date = new Date(stringDate);
+
+    const year = date.getFullYear().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+};
 
 const cEvent = new Event("change");
 barangSelect.dispatchEvent(cEvent);
