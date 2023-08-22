@@ -21,6 +21,7 @@ class TransaksiKeluarController extends Controller
     {
         $title = 'List Transaksi Penjualan';
         $data = TransaksiKeluar::with(['barang', 'barang.supplier'])
+            ->whereRelation('barang', 'deleted_at', '=', null)
             ->orderBy('tanggal_expired', 'asc')
             ->get();
 

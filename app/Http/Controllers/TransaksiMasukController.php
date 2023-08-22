@@ -18,6 +18,7 @@ class TransaksiMasukController extends Controller
     {
         $title = 'List Transaksi Pembelian';
         $data = TransaksiMasuk::with(['barang', 'barang.supplier', 'barang.satuan_barang'])
+            ->whereRelation('barang', 'deleted_at', '=', null)
             ->orderBy('tanggal_expired')
             ->get();
 

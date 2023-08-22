@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -34,8 +35,10 @@ class Barang extends Model
     {
         return Attribute::make(
             function () {
-                $trxMasuk = $this->transaksi_masuk;
-                $hasil = $this->transaksi_masuk->sum('jumlah_sekarang');
+                $hasil = $this
+                    ->transaksi_masuk
+                    ->where('tanggal_expired', '>=', Carbon::now()->hours(0)->minutes(0)->seconds(0))
+                    ->sum('jumlah_sekarang');
 
                 return $hasil;
             }

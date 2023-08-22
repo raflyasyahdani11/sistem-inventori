@@ -64,8 +64,6 @@ class Perhitungan extends Model
             function () {
                 $totalPenjualan = $this->kebutuhan_setahun;
                 $leadTime = $this->barang->supplier->lead_time;
-                $banyakPenjualan = $this->total_transaksi;
-                $penjualanMax = $this->penjualan_maksimal;
 
                 $rataRataPerhari = ($totalPenjualan / 12 / 30);
 
