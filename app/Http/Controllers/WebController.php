@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Supplier;
 use App\Models\Perhitungan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use App\Models\TransaksiMasuk;
 use App\Models\TransaksiKeluar;
@@ -229,12 +230,10 @@ class WebController extends Controller
             })
             ->toArray();
 
-        $fileExport = new TransaksiMasukExport($transaksiMasuk);
-        $fileName = "transaksi_masuk.xlsx";
-        $response = Excel::download($fileExport, $fileName);
-        ob_end_clean();
+        $data = $transaksiMasuk;
+        $pdf = Pdf::loadView('exports.transaksi_masuk', compact('data'));
 
-        return $response;
+        return $pdf->download('transaksi_pembelian.pdf');
     }
 
     public function downloadReportTransactionOut(DownloadReportTransactionOutRequest $request)
@@ -261,11 +260,9 @@ class WebController extends Controller
             })
             ->toArray();
 
-        $fileExport = new TransaksiKeluarExport($transaksiKeluar);
-        $fileName = "transaksi_keluar.xlsx";
-        $response = Excel::download($fileExport, $fileName);
-        ob_end_clean();
+        $data = $transaksiKeluar;
+        $pdf = Pdf::loadView('exports.transaksi_keluar', compact('data'));
 
-        return $response;
+        return $pdf->download('transaksi_penjualan.pdf');
     }
 }
