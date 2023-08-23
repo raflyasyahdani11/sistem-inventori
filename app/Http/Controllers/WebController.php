@@ -176,6 +176,7 @@ class WebController extends Controller
 
         $data = Perhitungan::where('tahun_transaksi', $year)
             ->orderBy('barang_id')
+            ->whereRelation('barang', 'deleted_at', '=', null)
             ->get();
 
         $years = Perhitungan::select('tahun_transaksi')
