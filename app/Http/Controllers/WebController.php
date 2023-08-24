@@ -265,4 +265,17 @@ class WebController extends Controller
 
         return $pdf->download('transaksi_penjualan.pdf');
     }
+
+    public function showBarangExpired()
+    {
+        $title = 'List Barang Expired';
+
+        $data = TransaksiMasuk::with(['barang'])
+            ->where('tanggal_expired', '<=', Carbon::now()->setHours(0)->setMinutes(0)->setSeconds(1))
+            ->orderByDesc('tanggal_expired')
+            ->get();
+
+        return view('pages.data.barang.expired')
+            ->with(compact('title', 'data'));
+    }
 }

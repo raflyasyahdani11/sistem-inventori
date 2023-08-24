@@ -56,6 +56,8 @@ Route::prefix('/sistem-inventori')
             ]);
         });
 
+        Route::get('/data/barang-expired', [WebController::class, 'showBarangExpired'])->name('barang.expired');
+
         Route::prefix('/transaction')->group(function () {
             Route::resources([
                 'in' => TransaksiMasukController::class,

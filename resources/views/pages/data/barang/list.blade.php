@@ -9,9 +9,14 @@
 @endpush
 
 @section('button-side')
-    <a href="{{ route('barang.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-        <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data Barang
-    </a>
+    <div>
+        <a href="{{ route('barang.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Data Barang
+        </a>
+        <a href="{{ route('barang.expired') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class='bx bxs-band-aid'></i> List Expired
+        </a>
+    </div>
 @endsection
 
 @section('content')
