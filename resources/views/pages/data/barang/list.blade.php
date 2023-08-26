@@ -20,6 +20,9 @@
 @endsection
 
 @section('content')
+    @if (session('message'))
+        <x-alert type="{{ session('type') }}" message="{{ session('message') }}" title="{{ session('title') }}" />
+    @endif
     <div class="card shadow">
         <div class="card-body">
             <div class="table-responsive overflow-hidden">

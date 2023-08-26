@@ -55,13 +55,18 @@ class BarangController extends Controller
             'id_supplier' => $validatedRequest['supplier']
         ]);
 
-        if ($barang instanceof Barang) {
-            // Berhasil Insert DB
-        } else {
-            // Gagal Insert DB
+        $message = 'Barang telah ditambahkan!';
+        $type = 'success';
+        $title = 'Berhasil';
+
+        if (!($barang instanceof Barang)) {
+            $message = 'Barang gagal ditambahkan!';
+            $type = 'danger';
+            $title = 'Gagal';
         }
 
-        return redirect()->route('barang.index');
+        return redirect()->route('barang.index')
+            ->with(compact('message', 'type', 'title'));
     }
 
     /**
@@ -71,7 +76,7 @@ class BarangController extends Controller
     {
         $title = 'Detail Data Barang';
         $data = [
-            (object)[
+            (object) [
                 'periode' => 'Tahun',
                 'nama_barang' => 'Diso',
                 'jumlah_permintaan' => 600,
@@ -80,7 +85,7 @@ class BarangController extends Controller
                 'rop' => 216,
                 'range_waktu_pemesanan_kembali' => 6,
             ],
-            (object)[
+            (object) [
                 'periode' => 'Tahun',
                 'nama_barang' => 'Sinto',
                 'jumlah_permintaan' => 230,
@@ -125,13 +130,19 @@ class BarangController extends Controller
             'id_supplier' => $request->post('supplier'),
         ]);
 
-        if ($updatedRow > 0) {
-            // Berhasil Update
-        } else {
-            // Gagal Update
+
+        $message = 'Barang telah diupdate!';
+        $type = 'success';
+        $title = 'Berhasil';
+
+        if ($updatedRow === 0) {
+            $message = 'Barang gagal diupdate!';
+            $type = 'danger';
+            $title = 'Gagal';
         }
 
-        return redirect()->route('barang.index');
+        return redirect()->route('barang.index')
+            ->with(compact('message', 'type', 'title'));
     }
 
     /**
@@ -139,14 +150,30 @@ class BarangController extends Controller
      */
     public function destroy(Barang $barang)
     {
-        $isDeleted = $barang->delete();
+        $hasTransactionBuy = $barang->transaksi_masuk->count() > 0;
+        $hasTransactionSell = $barang->transaksi_keluar->count() > 0;
 
-        if ($isDeleted) {
-            // Berhasil Delete
-        } else {
-            // Gagal Delete
+        $message = 'Barang telah dihapus!';
+        $type = 'success';
+        $title = 'Berhasil';
+
+        if ($hasTransactionSell || $hasTransactionBuy) {
+            $message = 'Barang punya transaksi!';
+            $type = 'danger';
+            $title = 'Gagal';
         }
 
-        return redirect()->route('barang.index');
+        if ($hasTransactionBuy && $hasTransactionSell) {
+            $isDeleted = $barang->delete();
+
+            if (!$isDeleted) {
+                $message = 'Gagal Menghapus barang!';
+                $type = 'danger';
+                $title = 'Gagal';
+            }
+        }
+
+        return redirect()->route('barang.index')
+            ->with(compact('message', 'type', 'title'));
     }
 }

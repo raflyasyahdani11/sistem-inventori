@@ -27,7 +27,12 @@ class Barang extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'nama', 'kode', 'harga', 'id_jenis_barang', 'id_satuan_barang', 'id_supplier'
+        'nama',
+        'kode',
+        'harga',
+        'id_jenis_barang',
+        'id_satuan_barang',
+        'id_supplier'
     ];
 
 
@@ -68,5 +73,10 @@ class Barang extends Model
     public function transaksi_masuk(): HasMany
     {
         return $this->hasMany(TransaksiMasuk::class, 'barang_id', 'id');
+    }
+
+    public function transaksi_keluar(): HasMany
+    {
+        return $this->hasMany(TransaksiKeluar::class, 'barang_id', 'id');
     }
 }
