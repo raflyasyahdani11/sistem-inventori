@@ -153,24 +153,26 @@ class BarangController extends Controller
         $hasTransactionBuy = $barang->transaksi_masuk->count() > 0;
         $hasTransactionSell = $barang->transaksi_keluar->count() > 0;
 
-        $message = 'Barang telah dihapus!';
-        $type = 'success';
-        $title = 'Berhasil';
 
         if ($hasTransactionSell || $hasTransactionBuy) {
             $message = 'Barang punya transaksi!';
             $type = 'danger';
             $title = 'Gagal';
+
+            return redirect()->route('barang.index')
+                ->with(compact('message', 'type', 'title'));
         }
 
-        if ($hasTransactionBuy && $hasTransactionSell) {
-            $isDeleted = $barang->delete();
+        $message = 'Barang telah dihapus!';
+        $type = 'success';
+        $title = 'Berhasil';
 
-            if (!$isDeleted) {
-                $message = 'Gagal Menghapus barang!';
-                $type = 'danger';
-                $title = 'Gagal';
-            }
+        $isDeleted = $barang->delete();
+
+        if (!$isDeleted) {
+            $message = 'Gagal Menghapus barang!';
+            $type = 'danger';
+            $title = 'Gagal';
         }
 
         return redirect()->route('barang.index')
